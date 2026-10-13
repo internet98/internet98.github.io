@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>internet.98 - Warning</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: #008080;
+    font-family: "MS Sans Serif", Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    color: #000;
+}
+
+.window {
+    width: 100%;
+    max-width: 520px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #ffffff #404040 #404040 #ffffff;
+    box-shadow: 2px 2px 0 #000;
+    padding: 3px;
+}
+
+.titlebar {
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 5px;
+    color: white;
+    background: linear-gradient(90deg, #000080, #1084d0);
+    font-weight: bold;
+    letter-spacing: 0;
+}
+
+.title-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mini-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-grid;
+    place-items: center;
+    background: #c0c0c0;
+    color: #000080;
+    border: 1px solid white;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.title-close {
+    width: 18px;
+    height: 18px;
+    display: grid;
+    place-items: center;
+    color: #000;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: white #404040 #404040 white;
+    font-size: 14px;
+    line-height: 12px;
+}
+
+.content {
+    padding: 22px 18px 12px;
+}
+
+.message-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+.warning-icon {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+}
+
+.message {
+    line-height: 1.5;
+    padding-top: 1px;
+}
+
+.message p {
+    margin: 0 0 12px;
+}
+
+.message strong {
+    font-weight: bold;
+}
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    margin: 18px 0 8px;
+}
+
+button {
+    min-width: 82px;
+    padding: 5px 18px;
+    color: #000;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #fff #404040 #404040 #fff;
+    border-radius: 0;
+    font: inherit;
+    cursor: pointer;
+}
+
+button:active {
+    border-color: #404040 #fff #fff #404040;
+    padding: 6px 17px 4px 19px;
+}
+
+button:focus-visible {
+    outline: 1px dotted #000;
+    outline-offset: -5px;
+}
+
+.button-inner {
+    display: inline-block;
+    padding: 2px 5px;
+    border: 1px dotted transparent;
+}
+
+button:focus-visible .button-inner {
+    border-color: #000;
+}
+
+@media (max-width: 400px) {
+    .content {
+        padding: 16px 10px 10px;
+    }
+
+    .message-row {
+        gap: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<main class="window" role="dialog" aria-labelledby="windowTitle"
+      aria-describedby="warningMessage">
+
+    <header class="titlebar">
+        <div class="title-left">
+            <span class="mini-icon" aria-hidden="true">i</span>
+            <span id="windowTitle">internet.98 - Prototype Notice</span>
+        </div>
+        <span class="title-close" aria-hidden="true">×</span>
+    </header>
+
+    <section class="content">
+
+        <div class="message-row">
+
+            <svg class="warning-icon"
+                 viewBox="0 0 48 48"
+                 role="img"
+                 aria-label="Warning">
+                <path d="M24 3 L46 43 H2 Z"
+                      fill="#ffff00"
+                      stroke="#000000"
+                      stroke-width="2"/>
+                <path d="M24 14 V29"
+                      stroke="#000000"
+                      stroke-width="5"
+                      stroke-linecap="square"/>
+                <rect x="21.5" y="34" width="5" height="5"
+                      fill="#000000"/>
+            </svg>
+
+            <div class="message" id="warningMessage">
+
+                <p><strong>Welcome to internet.98!</strong></p>
+
+                <p>
+                    This project is an experimental prototype inspired
+                    by Windows 95, classic desktop computers, and the
+                    early internet.
+                </p>
+
+                <p>
+                    the code, and all this other then the icons, are ai
+                </p>
+
+                <p>
+                    so the icons are not made by ai, the name isn't made by ai and the logo is NOT made by ai, only the code
+                </p>
+
+                <p>
+                    the code will hopefully be redone and be fully human when I can code better, also this works best on a computer not a mobile device
+                </p>
+
+                <p>
+                    <strong>
+                        This is a work in progress, not a finished
+                        operating system.
+                    </strong>
+                </p>
+
+            </div>
+        </div>
+
+        <div class="button-row">
+            <button id="okButton" type="button" autofocus>
+                <span class="button-inner">OK</span>
+            </button>
+        </div>
+
+    </section>
+</main>
+
+<script>
+document.getElementById("okButton").addEventListener("click", function () {
+    window.location.href = "login.html";
+});
+
+// Pressing Enter also continues to the login screen.
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        window.location.href = "login.html";
+    }
+});
+</script>
+
+</body>
+</html>

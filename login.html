@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>internet.98 - Welcome</title>
+<link rel="stylesheet" href="css/system.css">
+</head>
+<body class="login-body">
+<main class="login-shell">
+  <section class="login-brand">
+    <img src="assets/logo.png" class="brand-logo" alt="internet.98"
+         onerror="this.hidden=true">
+    <div class="logo-fallback">internet<span>.98</span></div>
+    <p>A little window to a bigger world.</p>
+    <div class="welcome-art">
+      <div class="pixel-sun"></div>
+      <div class="pixel-hill"></div>
+      <div class="pixel-hill second"></div>
+      <div class="art-caption">WELCOME TO YOUR NEW COMPUTER!</div>
+    </div>
+    <p class="small">A retro desktop experience</p>
+  </section>
+
+  <section class="window login-window">
+    <header class="titlebar">
+      <span>Welcome to internet.98</span>
+      <span class="window-buttons">_ □ ×</span>
+    </header>
+    <div class="window-content">
+      <h2>Log on</h2>
+      <p class="muted">Enter your local profile details.</p>
+
+      <form id="loginForm">
+        <label for="loginUser">User name</label>
+        <input id="loginUser" maxlength="24" required autocomplete="username">
+        <label for="loginPass">Demo password</label>
+        <input id="loginPass" type="password" required autocomplete="current-password">
+        <p id="loginError" class="error"></p>
+        <button class="classic-button primary" type="submit">Log on</button>
+      </form>
+
+      <div class="button-row">
+        <button class="classic-button" id="showCreate">Create account</button>
+        <button class="classic-button" id="guestButton">Enter as guest</button>
+      </div>
+
+      <section id="createArea" class="hidden">
+        <hr>
+        <h3>Create a local profile</h3>
+        <p class="notice">This demo stores profiles in this browser only. Use a fictional password, not one you use elsewhere.</p>
+        <form id="createForm">
+          <label for="newUser">Screen name</label>
+          <input id="newUser" maxlength="24" required>
+          <label for="newEmail">Optional fictional email</label>
+          <input id="newEmail" type="email" placeholder="user@example.invalid">
+          <label for="newPass">Demo password</label>
+          <input id="newPass" type="password" minlength="4" required>
+          <p id="createError" class="error"></p>
+          <button class="classic-button primary" type="submit">Create profile</button>
+        </form>
+      </section>
+
+      <p class="fine-print">internet.98 is a local browser project, not a real internet provider or secure authentication service.</p>
+    </div>
+  </section>
+</main>
+<script src="js/system.js"></script>
+</body>
+</html>

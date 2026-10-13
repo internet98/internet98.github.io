@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>internet.98 Arcade</title>
+<link rel="stylesheet" href="../css/system.css">
+<style>
+body { background: #000; color: #fff; padding: 12px; font-family: monospace; }
+h1 { color: #ffff00; }
+canvas { width: 100%; max-width: 480px; background: #000; border: 3px ridge #aaa; image-rendering: pixelated; }
+</style>
+</head>
+<body>
+<h1>INTERNET.98 ARCADE</h1>
+<p>PIXEL DODGER: move with the arrow keys or WASD. Avoid the falling blocks.</p>
+<canvas id="game" width="480" height="320"></canvas>
+<p id="score">Score: 0</p>
+<button class="classic-button" id="start">Start / Restart</button>
+<p>Tip: click the game first if your keyboard isn't controlling it.</p>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const scoreText = document.getElementById("score");
+const keys = {};
+let player, blocks, score, running, lastTime;
+
+document.addEventListener("keydown", e => {
+  keys[e.key.toLowerCase()] = true;
+  if (["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," "].includes(e.key)) e.preventDefault();
+});
+document.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
+
+function reset() {
+  player = { x: 220, y: 270, w: 24, h: 24, speed: 230 };
+  blocks = [];
+  score = 0;
+  running = true;
+  lastTime = performance.now();
+  requestAnimationFrame(loop);
+}
+
+function loop(now) {
+  if (!running) return;
+  const dt = Math.min((now - lastTime) / 1000, 0.04);
+  lastTime = now;
+
+  if (keys.arrowleft || keys.a) player.x -= player.speed * dt;
+  if (keys.arrowright || keys.d) player.x += player.speed * dt;
+  if (keys.arrowup || keys.w) player.y -= player.speed * dt;
+  if (keys.arrowdown || keys.s) player.y += player.speed * dt;
+
+  player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
+  player.y = Math.max(0, Math.min(canvas.height - player.h, player.y));
+
+  if (Math.random() < 0.045) {
+    blocks.push({ x: Math.random() * (canvas.width - 20), y: -20, w: 18 + Math.random() * 18, h: 18, speed: 90 + Math.random() * 100 });
+  }
+
+  for (const b of blocks) b.y += b.speed * dt;
+  blocks = blocks.filter(b => b.y < canvas.height + 30);
+  score += dt * 10;
+  scoreText.textContent = "Score: " + Math.floor(score);
+
+  for (const b of blocks) {
+    if (player.x < b.x + b.w && player.x + player.w > b.x &&
+        player.y < b.y + b.h && player.y + player.h > b.y) {
+      running = false;
+      break;
+    }
+  }
+
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.strokeStyle = "#003366";
+  for (let x = 0; x < canvas.width; x += 24) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+  }
+  for (let y = 0; y < canvas.height; y += 24) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+  }
+
+  ctx.fillStyle = "#00ffff";
+  ctx.fillRect(player.x, player.y, player.w, player.h);
+  ctx.fillStyle = "#ff4040";
+  for (const b of blocks) ctx.fillRect(b.x, b.y, b.w, b.h);
+
+  if (!running) {
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 28px monospace";
+    ctx.fillText("GAME OVER", 145, 145);
+    ctx.font = "16px monospace";
+    ctx.fillText("Press Start to play again", 115, 175);
+    return;
+  }
+
+  requestAnimationFrame(loop);
+}
+
+document.getElementById("start").addEventListener("click", reset);
+ctx.fillStyle = "#fff";
+ctx.font = "18px monospace";
+ctx.fillText("PRESS START", 175, 160);
+</script>
+</body>
+</html>

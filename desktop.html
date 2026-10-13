@@ -1,0 +1,512 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>internet.98 - Desktop</title>
+
+<link rel="stylesheet" href="./css/system.css">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body.desktop-body {
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Tahoma, Arial, sans-serif;
+  color: #000;
+  background: #008080;
+  background-size: cover;
+  background-position: center;
+}
+
+.desktop-icons {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.desktop-icon {
+  width: 92px;
+  min-height: 82px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: white;
+  text-shadow: 1px 1px black;
+  font: 12px Tahoma, Arial, sans-serif;
+  text-align: center;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+}
+
+.desktop-icon:hover,
+.desktop-icon:focus {
+  background: rgba(0, 0, 128, 0.35);
+  border: 1px dotted white;
+  outline: none;
+}
+
+.desktop-icon img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 38px;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #c0c0c0;
+  border-top: 2px solid white;
+  box-shadow: inset 0 1px #dfdfdf;
+  z-index: 10000;
+}
+
+.win-button {
+  min-height: 28px;
+  padding: 3px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid;
+  border-color: white #404040 #404040 white;
+  border-radius: 0;
+  background: #c0c0c0;
+  color: black;
+  font: bold 12px Tahoma, Arial, sans-serif;
+  cursor: pointer;
+}
+
+.win-button:active {
+  border-color: #404040 white white #404040;
+}
+
+.start-button {
+  min-width: 82px;
+}
+
+.start-button img {
+  width: 21px;
+  height: 21px;
+  object-fit: contain;
+}
+
+.taskbar-spacer {
+  flex: 1;
+}
+
+.clock {
+  min-width: 76px;
+  padding: 5px 7px;
+  border: 2px solid;
+  border-color: #808080 white white #808080;
+  text-align: center;
+  font-size: 12px;
+}
+
+.start-menu {
+  position: fixed;
+  bottom: 38px;
+  left: 3px;
+  width: 238px;
+  padding: 4px;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: white #404040 #404040 white;
+  box-shadow: 2px 2px 0 #0006;
+  z-index: 10001;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.start-banner {
+  height: 56px;
+  margin-bottom: 4px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background: linear-gradient(90deg, #000080, #1084d0);
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.start-menu button:not(.win-button) {
+  width: 100%;
+  min-height: 39px;
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background: transparent;
+  color: black;
+  font: 13px Tahoma, Arial, sans-serif;
+  text-align: left;
+  cursor: pointer;
+}
+
+.start-menu button:not(.win-button):hover {
+  background: #000080;
+  color: white;
+}
+
+.start-menu img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.start-menu hr {
+  border: 0;
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid white;
+}
+
+.app-window {
+  position: absolute;
+  top: 55px;
+  left: 125px;
+  width: min(780px, calc(100vw - 145px));
+  height: min(540px, calc(100vh - 105px));
+  min-width: 250px;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: white #404040 #404040 white;
+  box-shadow: 3px 3px 0 #0007;
+  z-index: 100;
+}
+
+.title-bar {
+  min-height: 28px;
+  margin: 3px 3px 0;
+  padding: 3px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  background: linear-gradient(90deg, #000080, #1084d0);
+  font-size: 13px;
+  font-weight: bold;
+  cursor: move;
+}
+
+.title-bar button {
+  width: 22px;
+  height: 21px;
+  padding: 0;
+  border: 2px solid;
+  border-color: white #404040 #404040 white;
+  background: #c0c0c0;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.window-content {
+  flex: 1;
+  min-height: 0;
+  padding: 4px;
+}
+
+.window-content iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 2px solid;
+  border-color: #404040 white white #404040;
+  background: white;
+}
+
+.window-status {
+  margin: 0 3px 3px;
+  padding: 4px 6px;
+  border-top: 1px solid #808080;
+  font-size: 11px;
+}
+
+@media (max-width: 600px) {
+  .app-window {
+    top: 35px;
+    left: 5px;
+    width: calc(100vw - 10px);
+    height: calc(100vh - 85px);
+  }
+}
+</style>
+</head>
+
+<body class="desktop-body">
+
+<!-- DESKTOP ICONS -->
+<div class="desktop-icons">
+
+  <button class="desktop-icon"
+          data-app="./apps/browser.html"
+          data-title="Internet Browser">
+    <img src="./computer.png" alt="Computer">
+    <span>Internet Browser</span>
+  </button>
+
+  <button class="desktop-icon"
+          data-app="./apps/arcade.html"
+          data-title="Arcade">
+    <img src="./arcade.png" alt="Arcade">
+    <span>Arcade</span>
+  </button>
+
+  <button class="desktop-icon"
+          data-app="./apps/files.html"
+          data-title="My Files">
+    <img src="./computer.png" alt="Files">
+    <span>My Files</span>
+  </button>
+
+  <button class="desktop-icon"
+          data-app="./apps/settings.html"
+          data-title="Display Settings">
+    <img src="./computer.png" alt="Settings">
+    <span>Settings</span>
+  </button>
+
+</div>
+
+<!-- START MENU -->
+<div id="startMenu" class="start-menu hidden">
+
+  <div class="start-banner">internet.98</div>
+
+  <button data-app="./apps/browser.html" data-title="Internet Browser">
+    <img src="./computer.png" alt="">
+    Internet Browser
+  </button>
+
+  <button data-app="./apps/arcade.html" data-title="Arcade">
+    <img src="./arcade.png" alt="">
+    Arcade
+  </button>
+
+  <button data-app="./apps/files.html" data-title="My Files">
+    <img src="./computer.png" alt="">
+    My Files
+  </button>
+
+  <button data-app="./apps/settings.html" data-title="Display Settings">
+    <img src="./computer.png" alt="">
+    Display Settings
+  </button>
+
+  <hr>
+
+  <button id="logoffButton">
+    <img src="./logo.png" alt="">
+    Log off
+  </button>
+
+</div>
+
+<!-- TASKBAR -->
+<footer class="taskbar">
+
+  <button id="startButton" class="win-button start-button">
+    <img src="./logo.png" alt="">
+    Start
+  </button>
+
+  <div class="taskbar-spacer"></div>
+
+  <div id="clock" class="clock">12:00 PM</div>
+
+</footer>
+
+<script src="./js/system.js"></script>
+
+<script>
+(() => {
+  const startButton = document.getElementById("startButton");
+  const startMenu = document.getElementById("startMenu");
+  const clock = document.getElementById("clock");
+
+  // START MENU
+  startButton.addEventListener("click", event => {
+    event.stopPropagation();
+    startMenu.classList.toggle("hidden");
+  });
+
+  document.addEventListener("click", event => {
+    if (!startMenu.contains(event.target) &&
+        !startButton.contains(event.target)) {
+      startMenu.classList.add("hidden");
+    }
+  });
+
+  // CLOCK
+  function updateClock() {
+    clock.textContent = new Date().toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit"
+    });
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // RESTORE SAVED WALLPAPER SETTINGS
+  try {
+    const settings = JSON.parse(
+      localStorage.getItem("internet98_settings") || "{}"
+    );
+
+    if (settings.backgroundColor) {
+      document.body.style.backgroundColor = settings.backgroundColor;
+    }
+
+    if (settings.backgroundImage) {
+      document.body.style.backgroundImage =
+        'url("' + settings.backgroundImage + '")';
+    }
+  } catch (error) {
+    console.warn("Could not load saved desktop settings:", error);
+  }
+
+  // OPEN APP WINDOWS
+  let topZIndex = 100;
+
+  function openApp(path, title) {
+    startMenu.classList.add("hidden");
+
+    const win = document.createElement("section");
+    win.className = "app-window";
+    win.style.zIndex = ++topZIndex;
+
+    const bar = document.createElement("div");
+    bar.className = "title-bar";
+
+    const label = document.createElement("span");
+    label.textContent = title;
+
+    const close = document.createElement("button");
+    close.type = "button";
+    close.textContent = "×";
+    close.title = "Close";
+
+    bar.append(label, close);
+
+    const content = document.createElement("div");
+    content.className = "window-content";
+
+    const iframe = document.createElement("iframe");
+    iframe.src = path;
+    iframe.title = title;
+
+    content.appendChild(iframe);
+
+    const status = document.createElement("div");
+    status.className = "window-status";
+    status.textContent = "Ready";
+
+    win.append(bar, content, status);
+    document.body.appendChild(win);
+
+    close.addEventListener("click", () => win.remove());
+
+    win.addEventListener("mousedown", () => {
+      win.style.zIndex = ++topZIndex;
+    });
+
+    // DRAG WINDOWS BY THEIR TITLE BAR
+    let dragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    bar.addEventListener("pointerdown", event => {
+      if (event.target === close) return;
+
+      dragging = true;
+
+      const rect = win.getBoundingClientRect();
+      offsetX = event.clientX - rect.left;
+      offsetY = event.clientY - rect.top;
+
+      bar.setPointerCapture(event.pointerId);
+    });
+
+    bar.addEventListener("pointermove", event => {
+      if (!dragging) return;
+
+      const maxLeft = Math.max(0, innerWidth - 100);
+      const maxTop = Math.max(0, innerHeight - 65);
+
+      win.style.left = Math.min(
+        maxLeft, Math.max(0, event.clientX - offsetX)
+      ) + "px";
+
+      win.style.top = Math.min(
+        maxTop, Math.max(0, event.clientY - offsetY)
+      ) + "px";
+    });
+
+    bar.addEventListener("pointerup", () => {
+      dragging = false;
+    });
+
+    bar.addEventListener("pointercancel", () => {
+      dragging = false;
+    });
+  }
+
+  // OPEN APPLICATIONS FROM ICONS AND START MENU
+  document.querySelectorAll("[data-app]").forEach(button => {
+    button.addEventListener("click", () => {
+      openApp(
+        button.dataset.app,
+        button.dataset.title || "Application"
+      );
+    });
+  });
+
+  // LOG OFF
+  document.getElementById("logoffButton").addEventListener("click", () => {
+    sessionStorage.removeItem("internet98_session");
+    window.location.href = "./login.html";
+  });
+
+  // SHOW A USEFUL ERROR IF AN IMAGE REALLY IS MISSING
+  document.querySelectorAll(".desktop-icon img, .start-menu img, .start-button img")
+    .forEach(img => {
+      img.addEventListener("error", () => {
+        console.error("Image failed to load:", img.src);
+        img.style.display = "none";
+      });
+    });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Display Settings</title>
+<link rel="stylesheet" href="../css/system.css">
+<style>
+body { background: #c0c0c0; padding: 12px; }
+canvas { width: 100%; max-height: 300px; object-fit: contain; background: #222; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+</style>
+</head>
+<body>
+<h2>Display Properties</h2>
+<p>Choose a wallpaper and give it a 256-color retro makeover.</p>
+
+<label for="imageInput">Select an image</label>
+<input type="file" id="imageInput" accept="image/*">
+
+<label for="wallpaperColor">Desktop color</label>
+<input id="wallpaperColor" type="color" value="#008080">
+
+<label>
+  <input id="ditherToggle" type="checkbox" checked style="width:auto;min-height:auto">
+  Enable dithering
+</label>
+
+<p id="imageStatus">No image selected.</p>
+<canvas id="preview" width="640" height="360"></canvas>
+
+<div class="actions">
+  <button class="classic-button" id="convertButton">Convert to 256 colors</button>
+  <button class="classic-button" id="applyButton">Apply background</button>
+  <button class="classic-button" id="clearButton">Clear wallpaper</button>
+  <button class="classic-button" id="downloadButton">Save converted PNG</button>
+</div>
+
+<p class="fine-print">
+  Images are processed in this browser. Large images may take a moment.
+  Wallpaper settings are saved in this browser.
+</p>
+
+<script src="../js/palette.js"></script>
+<script>
+const input = document.getElementById("imageInput");
+const canvas = document.getElementById("preview");
+const ctx = canvas.getContext("2d", { willReadFrequently: true });
+const status = document.getElementById("imageStatus");
+const colorInput = document.getElementById("wallpaperColor");
+const ditherToggle = document.getElementById("ditherToggle");
+
+let sourceImage = null;
+let converted = false;
+
+function drawImage(image) {
+  const maxWidth = 640;
+  const maxHeight = 360;
+  const scale = Math.min(maxWidth / image.width, maxHeight / image.height, 1);
+  canvas.width = Math.max(1, Math.round(image.width * scale));
+  canvas.height = Math.max(1, Math.round(image.height * scale));
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+  converted = false;
+}
+
+input.addEventListener("change", () => {
+  const file = input.files && input.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    status.textContent = "Please select an image file.";
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      sourceImage = img;
+      drawImage(img);
+      status.textContent = "Loaded: " + file.name;
+    };
+    img.onerror = () => status.textContent = "Could not read this image.";
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById("convertButton").addEventListener("click", () => {
+  if (!sourceImage) {
+    status.textContent = "Choose an image first.";
+    return;
+  }
+
+  drawImage(sourceImage);
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const result = Internet98Palette.convert(imageData, ditherToggle.checked);
+  ctx.putImageData(result, 0, 0);
+  converted = true;
+  status.textContent = "Converted using the internet.98 256-color palette.";
+});
+
+document.getElementById("applyButton").addEventListener("click", () => {
+  const settings = JSON.parse(localStorage.getItem("internet98_settings") || "{}");
+  settings.backgroundColor = colorInput.value;
+
+  if (sourceImage) {
+    settings.backgroundImage = canvas.toDataURL("image/png");
+  } else {
+    delete settings.backgroundImage;
+  }
+
+  try {
+    localStorage.setItem("internet98_settings", JSON.stringify(settings));
+    status.textContent = "Background saved. Reload the desktop to see it.";
+  } catch {
+    status.textContent = "Storage is full. Try a smaller image.";
+  }
+});
+
+document.getElementById("clearButton").addEventListener("click", () => {
+  const settings = JSON.parse(localStorage.getItem("internet98_settings") || "{}");
+  delete settings.backgroundImage;
+  settings.backgroundColor = colorInput.value;
+  localStorage.setItem("internet98_settings", JSON.stringify(settings));
+  sourceImage = null;
+  converted = false;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  status.textContent = "Wallpaper cleared.";
+});
+
+document.getElementById("downloadButton").addEventListener("click", () => {
+  if (!sourceImage) {
+    status.textContent = "Choose an image first.";
+    return;
+  }
+  const link = document.createElement("a");
+  link.download = "internet98-wallpaper.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+});
+
+const saved = JSON.parse(localStorage.getItem("internet98_settings") || "{}");
+if (saved.backgroundColor) colorInput.value = saved.backgroundColor;
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Internet Browser</title>
+<link rel="stylesheet" href="../css/system.css">
+<style>
+body { background: #c0c0c0; }
+</style>
+</head>
+<body>
+<div class="browser-bar">
+  <input id="address" value="https://www.google.com" aria-label="Web address">
+  <button class="classic-button" id="go">Go</button>
+  <button class="classic-button" id="search">Search</button>
+</div>
+<div class="app-content">
+  <p>Welcome to the internet. A surprisingly large place full of websites and cookie pop-ups.</p>
+  <p>Enter a website address or search term above.</p>
+  <p id="message"></p>
+  <iframe id="page" title="Website" style="width:100%;height:55vh;background:white;border:2px inset white"></iframe>
+</div>
+<script>
+const address = document.getElementById("address");
+const page = document.getElementById("page");
+const message = document.getElementById("message");
+
+function navigate(searchMode = false) {
+  let value = address.value.trim();
+  if (!value) return;
+
+  if (searchMode || (!value.includes(".") && !value.includes("://"))) {
+    value = "https://www.google.com/search?q=" + encodeURIComponent(value);
+  } else if (!/^https?:\/\//i.test(value)) {
+    value = "https://" + value;
+  }
+
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:" && url.protocol !== "http:") {
+      message.textContent = "Only HTTP and HTTPS websites are supported.";
+      return;
+    }
+    page.src = url.href;
+    address.value = url.href;
+    message.textContent = "If the site refuses to load, open it in a normal browser tab.";
+  } catch {
+    message.textContent = "That address doesn't look valid.";
+  }
+}
+
+document.getElementById("go").addEventListener("click", () => navigate(false));
+document.getElementById("search").addEventListener("click", () => navigate(true));
+address.addEventListener("keydown", e => {
+  if (e.key === "Enter") navigate(false);
+});
+</script>
+</body>
+</html>
