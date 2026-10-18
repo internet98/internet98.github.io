@@ -1,60 +1,546 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Internet Browser</title>
-<link rel="stylesheet" href="../css/system.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Internet Expedition - Explore the Web!</title>
+
 <style>
-body { background: #c0c0c0; }
-</style>
-</head>
-<body>
-<div class="browser-bar">
-  <input id="address" value="https://www.google.com" aria-label="Web address">
-  <button class="classic-button" id="go">Go</button>
-  <button class="classic-button" id="search">Search</button>
-</div>
-<div class="app-content">
-  <p>Welcome to the internet. A surprisingly large place full of websites and cookie pop-ups.</p>
-  <p>Enter a website address or search term above.</p>
-  <p id="message"></p>
-  <iframe id="page" title="Website" style="width:100%;height:55vh;background:white;border:2px inset white"></iframe>
-</div>
-<script>
-const address = document.getElementById("address");
-const page = document.getElementById("page");
-const message = document.getElementById("message");
-
-function navigate(searchMode = false) {
-  let value = address.value.trim();
-  if (!value) return;
-
-  if (searchMode || (!value.includes(".") && !value.includes("://"))) {
-    value = "https://www.google.com/search?q=" + encodeURIComponent(value);
-  } else if (!/^https?:\/\//i.test(value)) {
-    value = "https://" + value;
-  }
-
-  try {
-    const url = new URL(value);
-    if (url.protocol !== "https:" && url.protocol !== "http:") {
-      message.textContent = "Only HTTP and HTTPS websites are supported.";
-      return;
-    }
-    page.src = url.href;
-    address.value = url.href;
-    message.textContent = "If the site refuses to load, open it in a normal browser tab.";
-  } catch {
-    message.textContent = "That address doesn't look valid.";
-  }
+:root {
+    --blue: #000080;
+    --light-blue: #dbe8f7;
+    --gray: #c0c0c0;
+    --dark-gray: #808080;
+    --white: #ffffff;
+    --black: #000000;
 }
 
-document.getElementById("go").addEventListener("click", () => navigate(false));
-document.getElementById("search").addEventListener("click", () => navigate(true));
-address.addEventListener("keydown", e => {
-  if (e.key === "Enter") navigate(false);
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #008080;
+    color: #111;
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    font-size: 13px;
+}
+
+a {
+    color: #0000aa;
+}
+
+a:visited {
+    color: #660099;
+}
+
+button, input, select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    background: var(--gray);
+    border: 2px outset white;
+    padding: 7px 12px;
+    color: black;
+}
+
+button:active {
+    border-style: inset;
+}
+
+/* Main desktop window */
+
+.window {
+    width: min(940px, calc(100% - 24px));
+    margin: 22px auto;
+    background: var(--gray);
+    border: 3px outset white;
+    box-shadow: 5px 5px 0 rgba(0,0,0,.25);
+}
+
+.titlebar {
+    background: var(--blue);
+    color: white;
+    padding: 8px 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.titlebar .symbol {
+    font-size: 19px;
+}
+
+.titlebar .controls {
+    background: var(--gray);
+    color: black;
+    padding: 1px 7px;
+    border: 2px outset white;
+}
+
+.menubar {
+    padding: 8px;
+    display: flex;
+    gap: 20px;
+    border-bottom: 1px solid #888;
+    flex-wrap: wrap;
+}
+
+.menubar a {
+    color: #111;
+    text-decoration: none;
+}
+
+.menubar a:hover {
+    text-decoration: underline;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px;
+    background: #dedbd3;
+    border-bottom: 2px inset white;
+    flex-wrap: wrap;
+}
+
+.address {
+    flex: 1;
+    min-width: 180px;
+    background: white;
+    border: 2px inset #eee;
+    padding: 7px;
+    overflow-wrap: anywhere;
+}
+
+main {
+    background: white;
+    margin: 10px;
+    border: 2px inset white;
+}
+
+.hero {
+    padding: 25px 18px 20px;
+    text-align: center;
+    color: white;
+    background:
+        radial-gradient(ellipse at center, #214e8b, #071338 75%);
+    border-bottom: 5px ridge #c0c0c0;
+}
+
+.globe {
+    font-size: clamp(45px, 9vw, 75px);
+    margin-bottom: 5px;
+    text-shadow: 3px 3px #000;
+}
+
+.hero h1 {
+    margin: 4px 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(27px, 6vw, 43px);
+    letter-spacing: 2px;
+    color: #ffe78b;
+    text-shadow: 2px 2px black;
+}
+
+.hero p {
+    margin: 10px 0 0;
+    color: #dce8ff;
+    line-height: 1.6;
+}
+
+.search-area {
+    padding: 18px;
+    background: #e6e4dc;
+    border-bottom: 2px groove white;
+}
+
+.search-area h2 {
+    font-size: 17px;
+    margin: 0 0 12px;
+}
+
+.search-form {
+    display: flex;
+    gap: 7px;
+}
+
+.search-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px;
+    background: white;
+    border: 2px inset white;
+    font-size: 15px;
+}
+
+.search-form button {
+    font-weight: bold;
+    min-width: 90px;
+}
+
+.filters {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px;
+}
+
+.filters label {
+    font-weight: bold;
+}
+
+.filters select {
+    padding: 6px;
+    background: white;
+    border: 2px inset white;
+    max-width: 100%;
+}
+
+.section {
+    padding: 18px;
+}
+
+.section-title {
+    font-size: 18px;
+    color: #000080;
+    border-bottom: 2px solid #000080;
+    padding-bottom: 7px;
+    margin: 0 0 15px;
+}
+
+.destinations {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.destination {
+    min-width: 0;
+    padding: 13px;
+    background: #f5f5f5;
+    border: 1px solid #aaa;
+    border-top: 3px solid #244f91;
+}
+
+.destination h3 {
+    margin: 0 0 7px;
+    font-size: 15px;
+}
+
+.destination p {
+    margin: 0 0 12px;
+    line-height: 1.6;
+}
+
+.destination a {
+    display: inline-block;
+    margin-top: 3px;
+}
+
+.expedition-button {
+    display: inline-block;
+    padding: 7px 10px;
+    border: 2px outset white;
+    background: #d6d6d6;
+    text-decoration: none;
+    color: #000080 !important;
+}
+
+.expedition-button:hover {
+    background: #e8e8ff;
+}
+
+.tip {
+    margin: 0 18px 18px;
+    padding: 12px;
+    background: #fffbdc;
+    border: 1px solid #b9a95d;
+    line-height: 1.6;
+}
+
+footer {
+    background: #dedbd3;
+    border-top: 2px groove white;
+    text-align: center;
+    padding: 12px;
+    color: #333;
+    line-height: 1.8;
+}
+
+.statusbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 9px;
+    color: #333;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 520px) {
+    .window {
+        width: calc(100% - 12px);
+        margin: 6px auto;
+    }
+
+    main {
+        margin: 5px;
+    }
+
+    .destinations {
+        grid-template-columns: 1fr;
+    }
+
+    .search-form {
+        flex-wrap: wrap;
+    }
+
+    .search-form input {
+        flex-basis: 100%;
+    }
+
+    .search-form button {
+        flex: 1;
+    }
+
+    .section, .search-area {
+        padding: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="window">
+
+    <header class="titlebar">
+        <span><span class="symbol">🌐</span>
+        Internet Expedition</span>
+        <span class="controls">_ &nbsp; □ &nbsp; ×</span>
+    </header>
+
+    <nav class="menubar">
+        <a href="index.html">Home</a>
+        <a href="#search">Search</a>
+        <a href="#destinations">Expeditions</a>
+        <a href="#about">About</a>
+    </nav>
+
+    <div class="toolbar">
+        <button onclick="history.back()">◀ Back</button>
+        <button onclick="location.reload()">↻ Refresh</button>
+        <span class="address" id="address">
+            http://internet98.github.io/expedition.html
+        </span>
+        <button onclick="location.href='index.html'">Home</button>
+    </div>
+
+    <main>
+        <section class="hero">
+            <div class="globe">🌎</div>
+            <h1>INTERNET EXPEDITION</h1>
+            <p>
+                Your gateway to the World Wide Web!<br>
+                Discover new places. Explore old favorites.
+                Find something unexpected.
+            </p>
+            <p>★ ESTABLISHED 1998 ★</p>
+        </section>
+
+        <section class="search-area" id="search">
+            <h2>🔎 Search the Internet</h2>
+
+            <form class="search-form" id="searchForm">
+                <input
+                    id="query"
+                    type="search"
+                    placeholder="What do you want to discover?"
+                    aria-label="Search the internet"
+                    maxlength="300"
+                    required
+                >
+                <button type="submit">Search!</button>
+            </form>
+
+            <div class="filters">
+                <label for="category">Expedition category:</label>
+                <select id="category">
+                    <option value="">Everything</option>
+                    <option value="retro gaming arcade">Games & Arcades</option>
+                    <option value="vintage computers Windows 95">Retro Computing</option>
+                    <option value="1980s 1990s cartoons television">Cartoons & TV</option>
+                    <option value="1980s 1990s music">Music</option>
+                    <option value="old personal websites GeoCities">Forgotten Websites</option>
+                    <option value="internet history archives">Internet History</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="section" id="destinations">
+            <h2 class="section-title">🧭 Choose Your Expedition</h2>
+
+            <div class="destinations">
+
+                <article class="destination">
+                    <h3>🕹️ Arcade Alley</h3>
+                    <p>
+                        Visit the world of classic arcade cabinets,
+                        pixel games, high scores and electronic
+                        entertainment.
+                    </p>
+                    <a class="expedition-button"
+                       href="https://www.arcade-museum.com/">
+                       Enter Arcade Alley »
+                    </a>
+                </article>
+
+                <article class="destination">
+                    <h3>💾 Computer Corner</h3>
+                    <p>
+                        Explore vintage PCs, operating systems,
+                        computer history and the technology
+                        that brought the web into homes.
+                    </p>
+                    <a class="expedition-button"
+                       href="https://winworldpc.com/">
+                       Visit Computer Corner »
+                    </a>
+                </article>
+
+                <article class="destination">
+                    <h3>📺 Cartoon Station</h3>
+                    <p>
+                        Discover animation history, television
+                        archives and the colorful world of
+                        classic children's entertainment.
+                    </p>
+                    <a class="expedition-button"
+                       href="https://archive.org/">
+                       Visit the Archives »
+                    </a>
+                </article>
+
+                <article class="destination">
+                    <h3>🕸️ Forgotten Web</h3>
+                    <p>
+                        Explore preserved personal websites,
+                        old web designs and the strange,
+                        wonderful early internet.
+                    </p>
+                    <a class="expedition-button"
+                       href="https://www.webdesignmuseum.org/">
+                       Explore Web History »
+                    </a>
+                </article>
+
+                <article class="destination">
+                    <h3>⏳ Time Machine</h3>
+                    <p>
+                        Travel back through archived versions
+                        of websites and see how the internet
+                        looked in years gone by.
+                    </p>
+                    <a class="expedition-button"
+                       href="https://web.archive.org/">
+                       Travel Back in Time »
+                    </a>
+                </article>
+
+                <article class="destination">
+                    <h3>🌐 Early Web Museum</h3>
+                    <p>
+                        Learn about the history of the web,
+                        its early browsers, its creators
+                        and its evolution.
+                    </p>
+                    <a class="expedition-button"
+                       href="https://theoldnet.com/">
+                       Explore the Old Web »
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+        <div class="tip">
+            <strong>EXPEDITION TIP:</strong>
+            Type a topic above and choose a category to narrow
+            your search. Your search will open in DuckDuckGo.
+            No account or API key is required by this website.
+        </div>
+    </main>
+
+    <footer id="about">
+        <strong>INTERNET EXPEDITION</strong><br>
+        Exploring the World Wide Web, one click at a time.<br>
+        Part of the Internet.98 project.<br>
+        <span id="clock">Ready to explore!</span>
+    </footer>
+
+    <div class="statusbar">
+        <span id="status">Ready</span>
+        <span>🌐 Internet Expedition</span>
+    </div>
+
+</div>
+
+<script>
+const form = document.getElementById("searchForm");
+const queryInput = document.getElementById("query");
+const category = document.getElementById("category");
+const status = document.getElementById("status");
+
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const query = queryInput.value.trim();
+
+    if (!query) {
+        queryInput.focus();
+        status.textContent = "Please enter a search term.";
+        return;
+    }
+
+    const extra = category.value;
+    const fullQuery = extra
+        ? query + " " + extra
+        : query;
+
+    status.textContent = "Launching expedition...";
+
+    const searchURL =
+        "https://duckduckgo.com/?q=" +
+        encodeURIComponent(fullQuery);
+
+    window.location.href = searchURL;
+});
+
+queryInput.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        queryInput.value = "";
+    }
+});
+
+document.getElementById("clock").textContent =
+    "Expedition system online • " +
+    new Date().getFullYear();
+
+document.querySelectorAll(".expedition-button").forEach(function(link) {
+    link.addEventListener("click", function() {
+        status.textContent = "Opening expedition destination...";
+    });
 });
 </script>
+
 </body>
 </html>
