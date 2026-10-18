@@ -3,24 +3,33 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Internet Expedition - Explore the Old Web</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Internet Expedition</title>
 
 <style>
-* { box-sizing: border-box; }
-
 :root {
+  --desktop: #008080;
+  --window: #c0c0c0;
+  --light: #ffffff;
+  --dark: #404040;
+  --black: #000000;
   --blue: #000080;
-  --gray: #c0c0c0;
-  --teal: #008080;
+  --button: #c0c0c0;
 }
 
-body {
+* {
+  box-sizing: border-box;
+}
+
+html, body {
   margin: 0;
-  background: var(--teal);
-  color: #111;
-  font-family: Tahoma, Verdana, Arial, sans-serif;
-  font-size: 13px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: Tahoma, Arial, sans-serif;
+  font-size: 12px;
+  color: #000;
+  background: var(--window);
 }
 
 button, input, select {
@@ -28,777 +37,1145 @@ button, input, select {
 }
 
 button {
-  padding: 7px 11px;
-  background: var(--gray);
-  border: 2px outset white;
+  color: #000;
+  background: var(--button);
+  border: 2px solid;
+  border-color: var(--light) var(--dark) var(--dark) var(--light);
+  border-radius: 0;
+  padding: 5px 9px;
   cursor: pointer;
-  color: black;
 }
 
-button:active { border-style: inset; }
+button:active, button.pressed {
+  border-color: var(--dark) var(--light) var(--light) var(--dark);
+  padding-top: 6px;
+  padding-bottom: 4px;
+}
 
-a { color: #0000aa; }
-a:visited { color: #660099; }
+button:disabled {
+  color: #777;
+  cursor: default;
+}
 
-.shell {
-  width: min(1000px, calc(100% - 16px));
-  margin: 8px auto;
-  background: var(--gray);
-  border: 3px outset white;
-  min-height: calc(100vh - 16px);
+input, select {
+  background: #fff;
+  color: #000;
+  border: 2px solid;
+  border-color: var(--dark) var(--light) var(--light) var(--dark);
+  border-radius: 0;
+  padding: 5px;
+}
+
+a {
+  color: #0000aa;
+}
+
+.app {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--window);
+  min-height: 0;
 }
 
 .titlebar {
   background: var(--blue);
   color: white;
-  padding: 8px 10px;
   font-weight: bold;
+  padding: 6px 8px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  min-height: 29px;
+  gap: 10px;
 }
 
-.menubar, .toolbar {
+.title-left {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 8px;
-  border-bottom: 1px solid #888;
-}
-
-.menubar a {
-  text-decoration: none;
-  color: #111;
-}
-
-.address {
-  flex: 1;
-  min-width: 160px;
-  padding: 7px;
-  background: white;
-  border: 2px inset white;
-  overflow-wrap: anywhere;
-}
-
-main {
-  margin: 9px;
-  background: white;
-  border: 2px inset white;
-}
-
-.hero {
-  text-align: center;
-  padding: 24px 12px;
-  color: white;
-  background: radial-gradient(ellipse, #28568c, #071331);
-  border-bottom: 5px ridge #c0c0c0;
-}
-
-.globe {
-  font-size: 55px;
-  text-shadow: 3px 3px black;
-}
-
-h1 {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(25px, 5vw, 42px);
-  letter-spacing: 2px;
-  color: #ffe68b;
-  text-shadow: 2px 2px black;
-  margin: 5px 0;
-}
-
-.hero p {
-  color: #dce8ff;
-  line-height: 1.6;
-}
-
-.search-panel {
-  padding: 16px;
-  background: #e5e3dc;
-  border-bottom: 2px groove white;
-}
-
-.search-panel h2 { margin-top: 0; }
-
-.search-form {
-  display: flex;
   gap: 7px;
+  overflow: hidden;
 }
 
-#query {
-  flex: 1;
-  min-width: 0;
-  padding: 10px;
-  background: white;
-  border: 2px inset white;
-  font-size: 15px;
+.title-icon {
+  font-size: 17px;
 }
 
-.filters {
+.title-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.window-controls {
   display: flex;
-  gap: 8px;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.window-controls button {
+  padding: 0;
+  width: 20px;
+  height: 19px;
+  font-weight: bold;
+  line-height: 12px;
+}
+
+.menubar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 3px 5px;
+  border-bottom: 1px solid #808080;
+}
+
+.menubar button {
+  border: 1px solid transparent;
+  padding: 4px 8px;
+}
+
+.menubar button:hover {
+  border-color: #808080;
+}
+
+.toolbar {
+  padding: 6px;
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
+  gap: 5px;
+  border-bottom: 1px solid #808080;
+}
+
+.toolbar button {
+  min-width: 34px;
+}
+
+.address-row {
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid #808080;
+  min-width: 0;
+}
+
+.address-label {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+#address {
+  flex: 1;
+  width: 100px;
+  min-width: 0;
+}
+
+#goButton {
+  min-width: 48px;
+}
+
+.modebar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 5px 7px;
+  border-bottom: 1px solid #808080;
+}
+
+.modebar label {
+  font-weight: bold;
+}
+
+.modebar select {
+  max-width: 230px;
+}
+
+#notice {
+  padding: 5px 8px;
+  background: #ffffe1;
+  border-bottom: 1px solid #aaa;
+  min-height: 26px;
+  line-height: 16px;
+}
+
+#viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: #fff;
+  border: 2px solid;
+  border-color: #404040 #fff #fff #404040;
+}
+
+#webframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: white;
+  display: block;
+}
+
+#home {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  background: #fff;
+  padding: 18px;
+}
+
+#home.hidden {
+  display: none;
+}
+
+.home-header {
+  background: #000080;
+  color: #fff;
+  padding: 18px;
+  border: 3px ridge #c0c0c0;
+  text-align: center;
+}
+
+.home-header h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(25px, 4vw, 40px);
+  margin: 0 0 8px;
+}
+
+.home-header p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.home-section {
+  margin-top: 17px;
+}
+
+.home-section h2 {
+  background: #c0c0c0;
+  border: 2px outset #ddd;
+  padding: 6px;
+  font-size: 14px;
+  margin: 0 0 9px;
+}
+
+.directory {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+}
+
+.site-card {
+  background: #efefef;
+  border: 2px outset #fff;
+  padding: 10px;
+  min-width: 0;
+}
+
+.site-card h3 {
+  margin: 0 0 6px;
+  font-size: 13px;
+}
+
+.site-card p {
+  line-height: 1.5;
+  margin: 0 0 9px;
+}
+
+.site-card button {
+  width: 100%;
+}
+
+.small-link {
+  display: inline-block;
+  margin: 3px 0;
+}
+
+.warning {
+  border: 1px solid #999;
+  background: #ffffe1;
+  padding: 10px;
+  line-height: 1.5;
   margin-top: 12px;
 }
 
-select {
-  padding: 7px;
-  max-width: 100%;
+#offlinePage {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
   background: white;
-  border: 2px inset white;
+  padding: 24px;
+  display: none;
 }
 
-.content { padding: 16px; }
-
-.section-title {
-  font-size: 18px;
-  color: var(--blue);
-  border-bottom: 2px solid var(--blue);
-  padding-bottom: 8px;
+#offlinePage.visible {
+  display: block;
 }
 
-.notice {
-  padding: 12px;
-  background: #fffbdc;
-  border: 1px solid #b9a95d;
-  line-height: 1.6;
-  margin-bottom: 14px;
+#offlinePage h2 {
+  color: #000080;
 }
 
-.results-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.destination {
-  padding: 13px;
-  background: #f4f4f4;
-  border: 1px solid #aaa;
-  border-top: 3px solid #244f91;
-  overflow-wrap: anywhere;
-}
-
-.destination h3 { margin-top: 0; }
-
-.destination p {
+#offlinePage p {
   line-height: 1.6;
 }
 
-.destination button, .destination a {
-  display: inline-block;
-  margin: 3px 3px 3px 0;
+#offlinePage button {
+  margin: 3px;
 }
 
-.result {
-  padding: 13px 0;
-  border-bottom: 1px solid #ccc;
-  overflow-wrap: anywhere;
-}
-
-.result h3 {
-  font-size: 17px;
-  margin: 0 0 7px;
-  font-weight: normal;
-}
-
-.result p { line-height: 1.6; }
-
-.small {
-  font-size: 11px;
-  color: #555;
-  line-height: 1.6;
-}
-
-.actions {
+.statusbar {
   display: flex;
+  align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 10px;
+  padding: 4px 6px;
+  min-height: 25px;
+  border-top: 1px solid #fff;
 }
 
-footer {
-  padding: 13px;
-  text-align: center;
-  line-height: 1.8;
+#status {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.status {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-  padding: 7px 9px;
-  border-top: 2px groove white;
+#security {
+  white-space: nowrap;
 }
 
-.hidden { display: none !important; }
+.progress-track {
+  height: 4px;
+  background: #808080;
+}
 
-@media (max-width: 540px) {
-  .results-grid { grid-template-columns: 1fr; }
-  .search-form { flex-wrap: wrap; }
-  #query { flex-basis: 100%; }
-  .content, .search-panel { padding: 11px; }
-  main { margin: 4px; }
+#progress {
+  height: 100%;
+  width: 0;
+  background: #000080;
+  transition: width 0.15s;
+}
+
+@media (max-width: 500px) {
+  .address-label {
+    display: none;
+  }
+
+  #home {
+    padding: 9px;
+  }
+
+  .toolbar {
+    gap: 3px;
+  }
+
+  .toolbar button {
+    padding: 5px 6px;
+  }
 }
 </style>
 </head>
 
 <body>
-<div class="shell">
+<div class="app">
 
-  <header class="titlebar">
-    <span>🌐 Internet Expedition</span>
-    <span>_ &nbsp; □ &nbsp; ×</span>
-  </header>
+  <div class="titlebar">
+    <div class="title-left">
+      <span class="title-icon">🌐</span>
+      <span class="title-text">Internet Expedition - Old Web Browser</span>
+    </div>
+    <div class="window-controls">
+      <button id="minButton" title="Minimize">_</button>
+      <button id="maxButton" title="Toggle size">□</button>
+      <button id="closeButton" title="Return home">×</button>
+    </div>
+  </div>
 
-  <nav class="menubar">
-    <a href="#" id="homeLink">Home</a>
-    <a href="#" id="historyLink">History</a>
-    <a href="#" id="favoritesLink">Favorites</a>
-    <a href="#" id="aboutLink">About</a>
-  </nav>
+  <div class="menubar">
+    <button id="fileMenu">File</button>
+    <button id="editMenu">Edit</button>
+    <button id="viewMenu">View</button>
+    <button id="favoritesMenu">Favorites</button>
+    <button id="helpMenu">Help</button>
+  </div>
 
   <div class="toolbar">
-    <button id="backButton">◀ Back</button>
-    <button id="homeButton">⌂ Home</button>
-    <span class="address" id="address">
-      internet98.github.io/apps/browser.html
-    </span>
+    <button id="backButton" title="Go back">◀ Back</button>
+    <button id="forwardButton" title="Go forward">Forward ▶</button>
+    <button id="stopButton" title="Stop loading">■ Stop</button>
+    <button id="reloadButton" title="Reload page">↻ Reload</button>
+    <button id="homeButton" title="Home page">⌂ Home</button>
+    <button id="favoriteButton" title="Bookmark this address">★ Favorite</button>
   </div>
 
-  <main>
-    <section class="hero">
-      <div class="globe">🌎</div>
-      <h1>INTERNET EXPEDITION</h1>
-      <p>
-        Explore the forgotten World Wide Web.<br>
-        Personal websites, old computers and digital history.
-      </p>
-      <strong>★ YOUR JOURNEY BACK IN TIME ★</strong>
-    </section>
+  <form id="addressForm" class="address-row">
+    <span class="address-label">Address</span>
+    <input id="address" type="text" spellcheck="false"
+      placeholder="Enter a website address, e.g. example.com"
+      autocomplete="url">
+    <button id="goButton" type="submit">Go</button>
+  </form>
 
-    <section class="search-panel" id="searchPanel">
-      <h2>🔎 Search the Old Internet</h2>
+  <div class="modebar">
+    <label for="browseMode">Browse mode:</label>
+    <select id="browseMode">
+      <option value="archive">Archived version (1990s if available)</option>
+      <option value="live">Live website</option>
+    </select>
+    <button id="snapshotsButton" type="button">Find saved versions</button>
+    <button id="openTabButton" type="button">Open in new tab</button>
+  </div>
 
-      <form class="search-form" id="searchForm">
-        <input
-          id="query"
-          type="search"
-          placeholder="Try GeoCities, Windows 95, old arcade games..."
-          maxlength="300"
-          autocomplete="off"
-          required
-        >
-        <button type="submit">Search!</button>
-      </form>
+  <div id="notice">
+    Welcome to Internet Expedition. Choose a destination or enter a web address.
+  </div>
 
-      <div class="filters">
-        <label for="mode">Expedition:</label>
-        <select id="mode">
-          <option value="oldweb">Old Internet</option>
-          <option value="geocities">GeoCities Websites</option>
-          <option value="archive">Archived Websites</option>
-          <option value="computers">Vintage Computers</option>
-          <option value="games">Classic Games</option>
-          <option value="cartoons">Classic Cartoons & TV</option>
-          <option value="music">Old Music Websites</option>
-          <option value="modern">Modern Web Search</option>
-        </select>
-      </div>
-    </section>
+  <div id="progressTrack" class="progress-track">
+    <div id="progress"></div>
+  </div>
 
-    <section class="content">
-      <div id="notice" class="notice">
-        Welcome, explorer! Search for an old website or choose an expedition
-        below. Historical pages are not always available, but there are
-        millions of surviving web snapshots to explore.
+  <div id="viewport">
+    <iframe id="webframe"
+      title="Website browsing area"
+      referrerpolicy="no-referrer"
+      allow="fullscreen">
+    </iframe>
+
+    <div id="home">
+      <div class="home-header">
+        <h1>INTERNET EXPEDITION</h1>
+        <p>Explore the World Wide Web, past and present.</p>
+        <p>Welcome to the information superhighway!</p>
       </div>
 
-      <section id="homeSection">
-        <h2 class="section-title">🧭 Choose Your Expedition</h2>
+      <div class="warning">
+        <strong>Explorer's note:</strong>
+        This is a locally running browser interface. Historical pages are
+        retrieved from external archives. Some sites may be incomplete,
+        unavailable, or blocked from appearing inside this window.
+        Use "Open in new tab" if a page does not load here.
+      </div>
 
-        <div class="results-grid">
-          <article class="destination">
-            <h3>🕸️ The Forgotten Web</h3>
-            <p>
-              Find personal websites, colorful backgrounds, animated GIFs
-              and homemade pages from the early web.
-            </p>
-            <button data-query="1990s personal websites GeoCities">
-              Start exploring »
-            </button>
-            <p><a href="https://oocities.org/">Browse GeoCities archives</a></p>
-          </article>
+      <div class="home-section">
+        <h2>Start exploring the old internet</h2>
+        <div class="directory">
 
-          <article class="destination">
-            <h3>⏳ The Web Time Machine</h3>
-            <p>
-              Look up historical snapshots of a website and discover
-              what it looked like years ago.
-            </p>
-            <a href="https://web.archive.org/">Visit the Wayback Machine »</a>
-          </article>
+          <div class="site-card">
+            <h3>🕰 Wayback Machine</h3>
+            <p>Find archived versions of real websites from years gone by.</p>
+            <button data-url="https://web.archive.org/">Visit archive</button>
+          </div>
 
-          <article class="destination">
-            <h3>💾 Vintage Computers</h3>
-            <p>
-              Explore old computer systems, software, manuals and
-              the machines that connected people to the internet.
-            </p>
-            <button data-query="vintage computers 1990s computer history">
-              Start exploring »
-            </button>
-            <p><a href="https://winworldpc.com/">Visit WinWorld</a></p>
-          </article>
+          <div class="site-card">
+            <h3>🏡 GeoCities archive</h3>
+            <p>Explore surviving personal homepages from the old web.</p>
+            <button data-url="https://www.oocities.org/">Explore GeoCities</button>
+          </div>
 
-          <article class="destination">
-            <h3>🕹️ Classic Arcade Games</h3>
-            <p>
-              Discover arcade history, vintage game documentation,
-              old gaming sites and classic cabinets.
-            </p>
-            <button data-query="classic arcade games history 1980s">
-              Start exploring »
-            </button>
-            <p><a href="https://www.arcade-museum.com/">Arcade Museum</a></p>
-          </article>
+          <div class="site-card">
+            <h3>💾 Old Computer</h3>
+            <p>Explore historical computers, machines, and computing history.</p>
+            <button data-url="https://oldcomputers.net/">Visit website</button>
+          </div>
 
-          <article class="destination">
-            <h3>📺 Classic Television</h3>
-            <p>
-              Research old cartoons, children's shows, animation
-              and television history.
-            </p>
-            <button data-query="1980s 1990s children's television history">
-              Start exploring »
-            </button>
-            <p><a href="https://archive.org/">Internet Archive</a></p>
-          </article>
+          <div class="site-card">
+            <h3>🕹 Arcade Museum</h3>
+            <p>Discover arcade machines and the history of coin-operated games.</p>
+            <button data-url="https://www.arcade-museum.com/">Visit museum</button>
+          </div>
 
-          <article class="destination">
-            <h3>🎨 Old Web Design</h3>
-            <p>
-              Study classic layouts, old browser interfaces, tiled
-              backgrounds and vintage website graphics.
-            </p>
-            <button data-query="1990s web design historical websites">
-              Start exploring »
-            </button>
-            <p><a href="https://www.webdesignmuseum.org/">Web Design Museum</a></p>
-          </article>
+          <div class="site-card">
+            <h3>🏛 Computer History Museum</h3>
+            <p>Explore the history of computers and early technology.</p>
+            <button data-url="https://computerhistory.org/">Visit museum</button>
+          </div>
+
+          <div class="site-card">
+            <h3>📼 Internet Archive</h3>
+            <p>Browse digital collections, old software, films, and other media.</p>
+            <button data-url="https://archive.org/">Explore collections</button>
+          </div>
+
+          <div class="site-card">
+            <h3>🧑‍💻 Neocities</h3>
+            <p>Discover independently made personal websites inspired by the old web.</p>
+            <button data-url="https://neocities.org/">Visit Neocities</button>
+          </div>
+
+          <div class="site-card">
+            <h3>🪟 Windows 95 in a browser</h3>
+            <p>Try a browser-based recreation of a classic desktop operating system.</p>
+            <button data-url="https://win95.ajf.me/">Visit Windows 95</button>
+          </div>
+
         </div>
-      </section>
+      </div>
 
-      <section id="resultsSection" class="hidden">
-        <h2 class="section-title">Expedition Results</h2>
-        <div id="results"></div>
-      </section>
+      <div class="home-section">
+        <h2>Quick tools</h2>
+        <button id="randomButton">🎲 Random old-web discovery</button>
+        <button id="historyButton">🕓 Browse history</button>
+        <button id="bookmarksButton">★ My bookmarks</button>
+        <button id="searchButton">🔎 Search the old web</button>
+      </div>
 
-      <section id="historySection" class="hidden">
-        <h2 class="section-title">Recent Searches</h2>
-        <div id="history"></div>
-      </section>
+      <div class="home-section">
+        <h2>How to explore</h2>
+        <p>Enter a website address above, or choose a destination.</p>
+        <p>Select <strong>Archived version</strong> to try loading a saved copy
+        of a website. Select <strong>Live website</strong> to visit its current version.</p>
+        <p>Use <strong>Find saved versions</strong> to see whether the Internet
+        Archive has preserved the address you entered.</p>
+      </div>
+    </div>
 
-      <section id="favoritesSection" class="hidden">
-        <h2 class="section-title">Favorite Discoveries</h2>
-        <div id="favorites"></div>
-      </section>
-
-      <section id="aboutSection" class="hidden">
-        <h2 class="section-title">About Internet Expedition</h2>
-        <p>
-          Internet Expedition is a retro-styled portal for discovering
-          surviving websites and historical web archives.
-        </p>
-        <p>
-          Search engines and web archives have different indexes.
-          A search cannot guarantee that a site still exists or that
-          an archived snapshot is complete.
-        </p>
-        <p>
-          This version uses external search services for discovery
-          and the Wayback Machine for archived website snapshots.
-          It does not claim to own or index the entire old internet.
-        </p>
-      </section>
-    </section>
-  </main>
-
-  <footer>
-    <strong>INTERNET EXPEDITION</strong><br>
-    Part of the Internet.98 project.<br>
-    <span class="small">Exploring yesterday's web, one click at a time.</span>
-  </footer>
-
-  <div class="status">
-    <span id="status">Ready</span>
-    <span>🌐 Internet Expedition</span>
+    <div id="offlinePage">
+      <h2>Internet Expedition</h2>
+      <p id="offlineMessage">
+        This page may not allow itself to be displayed inside another page.
+      </p>
+      <p>You can still try opening it directly.</p>
+      <button id="retryButton">Try again</button>
+      <button id="offlineOpenButton">Open website in new tab</button>
+      <button id="offlineSnapshotsButton">Find archived copies</button>
+      <button id="returnHomeButton">Return home</button>
+    </div>
   </div>
+
+  <div class="statusbar">
+    <span id="status">Ready</span>
+    <span id="security">Internet</span>
+  </div>
+
 </div>
 
 <script>
 "use strict";
 
-const $ = id => document.getElementById(id);
+/*
+  INTERNET EXPEDITION
+  Local, static HTML application.
 
-const STORAGE = {
-  history: "ie_search_history_v1",
-  favorites: "ie_favorites_v1"
+  No API key or backend is required.
+  Website content is fetched from external websites or the Wayback Machine.
+  Browser security restrictions may prevent some sites from loading in iframe.
+*/
+
+const $ = (id) => document.getElementById(id);
+
+const frame = $("webframe");
+const home = $("home");
+const offlinePage = $("offlinePage");
+const address = $("address");
+const browseMode = $("browseMode");
+const notice = $("notice");
+const status = $("status");
+const progress = $("progress");
+
+const STORAGE_KEYS = {
+  history: "internetExpeditionHistoryV1",
+  favorites: "internetExpeditionFavoritesV1"
 };
 
-function loadList(key) {
+let historyItems = loadArray(STORAGE_KEYS.history);
+let favorites = loadArray(STORAGE_KEYS.favorites);
+
+let historyIndex = -1;
+let currentURL = "";
+let currentDisplayURL = "";
+let loadTimer = null;
+let progressTimer = null;
+let isShowingHome = true;
+
+const destinations = [
+  "https://www.oocities.org/",
+  "https://oldcomputers.net/",
+  "https://www.arcade-museum.com/",
+  "https://computerhistory.org/",
+  "https://archive.org/",
+  "https://neocities.org/",
+  "https://web.archive.org/"
+];
+
+function loadArray(key) {
   try {
     const value = JSON.parse(localStorage.getItem(key) || "[]");
     return Array.isArray(value) ? value : [];
-  } catch (_) {
+  } catch (error) {
     return [];
   }
 }
 
-const state = {
-  history: loadList(STORAGE.history),
-  favorites: loadList(STORAGE.favorites),
-  currentQuery: "",
-  previousQueries: []
-};
-
-const modes = {
-  oldweb: {
-    label: "Old Internet",
-    build: q =>
-      "https://www.google.com/search?q=" +
-      encodeURIComponent(
-        '(site:oocities.org OR site:geocities.ws OR ' +
-        'site:neocities.org) ' + q
-      )
-  },
-
-  geocities: {
-    label: "GeoCities Websites",
-    build: q =>
-      "https://www.google.com/search?q=" +
-      encodeURIComponent(
-        '(site:oocities.org OR site:geocities.ws) ' + q
-      )
-  },
-
-  archive: {
-    label: "Archived Websites",
-    build: q => {
-      if (/^https?:\/\//i.test(q)) {
-        return "https://web.archive.org/web/*/" + q;
-      }
-
-      return "https://www.google.com/search?q=" +
-        encodeURIComponent(
-          'site:web.archive.org/web/ ' + q
-        );
-    }
-  },
-
-  computers: {
-    label: "Vintage Computers",
-    build: q =>
-      "https://www.google.com/search?q=" +
-      encodeURIComponent(
-        '(site:winworldpc.com OR site:oldcomputers.net ' +
-        'OR site:computerhistory.org) ' + q
-      )
-  },
-
-  games: {
-    label: "Classic Games",
-    build: q =>
-      "https://www.google.com/search?q=" +
-      encodeURIComponent(
-        '(site:archive.org OR site:arcade-museum.com ' +
-        'OR site:classicgaming.games) ' + q
-      )
-  },
-
-  cartoons: {
-    label: "Classic Cartoons & TV",
-    build: q =>
-      "https://www.google.com/search?q=" +
-      encodeURIComponent(
-        '(site:archive.org OR site:paleycenter.org) ' + q
-      )
-  },
-
-  music: {
-    label: "Old Music Websites",
-    build: q =>
-      "https://www.google.com/search?q=" +
-      encodeURIComponent(
-        '(site:archive.org OR site:discogs.com) ' + q
-      )
-  },
-
-  modern: {
-    label: "Modern Web Search",
-    build: q =>
-      "https://duckduckgo.com/?q=" + encodeURIComponent(q)
-  }
-};
-
-function saveList(key, value) {
+function saveArray(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value));
-  } catch (_) {
-    $("status").textContent = "Browser storage unavailable";
+  } catch (error) {
+    setStatus("Could not save local data. Browser storage may be disabled.");
   }
 }
 
-function showSection(name) {
-  const ids = [
-    "homeSection",
-    "resultsSection",
-    "historySection",
-    "favoritesSection",
-    "aboutSection"
-  ];
-
-  ids.forEach(id => $(id).classList.add("hidden"));
-  $(name).classList.remove("hidden");
+function setStatus(message) {
+  status.textContent = message;
 }
 
-function make(tag, className, content) {
-  const element = document.createElement(tag);
-  if (className) element.className = className;
-  if (content !== undefined) element.textContent = content;
-  return element;
+function setNotice(message) {
+  notice.textContent = message;
 }
 
-function setNotice(text) {
-  $("notice").textContent = text;
-  $("notice").classList.remove("hidden");
+function setProgress(value) {
+  progress.style.width = Math.max(0, Math.min(100, value)) + "%";
 }
 
-function recordSearch(query) {
-  state.history = [
-    query,
-    ...state.history.filter(item => item !== query)
-  ].slice(0, 50);
-
-  saveList(STORAGE.history, state.history);
+function clearLoadTimers() {
+  if (loadTimer) clearTimeout(loadTimer);
+  if (progressTimer) clearInterval(progressTimer);
+  loadTimer = null;
+  progressTimer = null;
 }
 
-function search(query = $("query").value.trim()) {
-  query = query.trim();
+function startProgress() {
+  clearLoadTimers();
+  let amount = 4;
+  setProgress(amount);
 
-  if (!query) {
-    $("query").focus();
-    setNotice("Enter a topic or website address to begin.");
-    return;
-  }
+  progressTimer = setInterval(() => {
+    amount = Math.min(amount + Math.random() * 9, 88);
+    setProgress(amount);
+  }, 250);
 
-  const selected = modes[$("mode").value] || modes.oldweb;
-  const destination = selected.build(query);
-
-  state.currentQuery = query;
-  state.previousQueries.push(query);
-
-  recordSearch(query);
-
-  $("results").replaceChildren();
-
-  const result = make("article", "result");
-  result.append(
-    make("h3", "", selected.label),
-    make(
-      "p",
-      "",
-      'Search for "' + query + '" in the selected web collection.'
-    ),
-    make(
-      "p",
-      "small",
-      "These are external search results. Availability and historical coverage vary."
-    )
-  );
-
-  const open = make("a", "", "Open search results »");
-  open.href = destination;
-  open.target = "_blank";
-  open.rel = "noopener noreferrer";
-  result.append(open);
-
-  $("results").append(result);
-
-  if (/^https?:\/\//i.test(query)) {
-    const archive = make("article", "result");
-    archive.append(
-      make("h3", "", "Historical snapshots"),
-      make(
-        "p",
-        "",
-        "Check whether an earlier version of this website was archived."
-      )
+  loadTimer = setTimeout(() => {
+    clearLoadTimers();
+    setProgress(100);
+    setStatus("The page may still be loading, or the site may block embedded browsing.");
+    setNotice(
+      "If the page remains blank, use Open in new tab. Some websites block embedded browsing."
     );
-
-    const snapshot = make("a", "", "Explore archived versions »");
-    snapshot.href = "https://web.archive.org/web/*/" + query;
-    snapshot.target = "_blank";
-    snapshot.rel = "noopener noreferrer";
-    archive.append(snapshot);
-    $("results").append(archive);
-  }
-
-  $("notice").textContent =
-    'Expedition prepared for "' + query + '".';
-
-  $("notice").classList.remove("hidden");
-  $("address").textContent = "Internet Expedition / " + selected.label;
-  $("status").textContent = "Search ready";
-  showSection("results");
+    offlinePage.classList.add("visible");
+    $("offlineMessage").textContent =
+      "The website has not visibly loaded within the expected time. It may be slow, unavailable, or blocking embedded browsing.";
+  }, 12000);
 }
 
-function renderHistory() {
-  const container = $("history");
-  container.replaceChildren();
-
-  if (!state.history.length) {
-    container.append(make("p", "", "No searches recorded yet."));
-    return;
-  }
-
-  state.history.forEach(query => {
-    const row = make("p");
-    const button = make("button", "", "🔎 " + query);
-
-    button.addEventListener("click", () => {
-      $("query").value = query;
-      search(query);
-    });
-
-    row.append(button);
-    container.append(row);
-  });
-
-  const clear = make("button", "", "Clear History");
-  clear.addEventListener("click", () => {
-    state.history = [];
-    saveList(STORAGE.history, []);
-    renderHistory();
-  });
-
-  container.append(clear);
+function finishProgress() {
+  clearLoadTimers();
+  setProgress(100);
+  setTimeout(() => {
+    if (progress.style.width === "100%") setProgress(0);
+  }, 600);
 }
 
-function renderFavorites() {
-  const container = $("favorites");
-  container.replaceChildren();
-
-  if (!state.favorites.length) {
-    container.append(
-      make("p", "", "No favorite discoveries yet. Save a search to keep it here.")
-    );
-    return;
-  }
-
-  state.favorites.forEach(item => {
-    const row = make("article", "result");
-    const link = make("a", "", item.query);
-    link.href = item.url;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-
-    const remove = make("button", "", "Remove");
-    remove.addEventListener("click", () => {
-      state.favorites = state.favorites.filter(
-        favorite => favorite.url !== item.url
-      );
-      saveList(STORAGE.favorites, state.favorites);
-      renderFavorites();
-    });
-
-    row.append(link, document.createTextNode(" "), remove);
-    container.append(row);
-  });
+function showHome() {
+  clearLoadTimers();
+  isShowingHome = true;
+  currentURL = "";
+  currentDisplayURL = "";
+  address.value = "";
+  frame.src = "about:blank";
+  home.classList.remove("hidden");
+  offlinePage.classList.remove("visible");
+  setProgress(0);
+  setStatus("Ready");
+  setNotice("Welcome to Internet Expedition. Choose a destination or enter a web address.");
+  updateNavigationButtons();
 }
 
-function addCurrentFavorite() {
-  if (!state.currentQuery) return;
+function hideHome() {
+  isShowingHome = false;
+  home.classList.add("hidden");
+  offlinePage.classList.remove("visible");
+}
 
-  const selected = modes[$("mode").value] || modes.oldweb;
-  const item = {
-    query: state.currentQuery,
-    url: selected.build(state.currentQuery)
+function normalizeURL(value) {
+  let text = value.trim();
+
+  if (!text) return null;
+
+  if (/^(https?:\/\/|ftp:\/\/)/i.test(text)) {
+    try {
+      return new URL(text).href;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  // Treat strings containing spaces as searches, not malformed addresses.
+  if (/\s/.test(text)) return null;
+
+  // Allow local-looking domain names without a protocol.
+  if (/^(localhost|127\.0\.0\.1)(:\d+)?(\/.*)?$/i.test(text)) {
+    return "http://" + text;
+  }
+
+  if (/^[\w.-]+\.[a-z]{2,}(:\d+)?(\/.*)?$/i.test(text)) {
+    return "https://" + text;
+  }
+
+  return null;
+}
+
+function makeWaybackURL(url) {
+  // id_ requests an archived original where possible, rather than the
+  // archive's toolbar wrapper. If that snapshot does not exist, Wayback
+  // may redirect or display an unavailable-page message.
+  return "https://web.archive.org/web/1999id_/" + url;
+}
+
+function makeSnapshotSearchURL(url) {
+  return "https://web.archive.org/web/*/" + url;
+}
+
+function addHistory(url) {
+  if (!url) return;
+
+  const entry = {
+    url: url,
+    visited: new Date().toISOString()
   };
 
-  if (!state.favorites.some(f => f.url === item.url)) {
-    state.favorites.unshift(item);
-    saveList(STORAGE.favorites, state.favorites);
-  }
+  historyItems = historyItems.filter(item => item.url !== url);
+  historyItems.unshift(entry);
+  historyItems = historyItems.slice(0, 200);
 
-  renderFavorites();
-  $("status").textContent = "Favorite saved";
+  saveArray(STORAGE_KEYS.history, historyItems);
 }
 
-$("searchForm").addEventListener("submit", event => {
+function navigate(url, options = {}) {
+  if (!url) return;
+
+  clearLoadTimers();
+
+  const liveURL = normalizeURL(url);
+
+  if (!liveURL) {
+    if (url.includes(" ")) {
+      searchOldWeb(url);
+    } else {
+      setNotice("That address doesn't look valid. Enter a full website address or a search phrase.");
+      setStatus("Invalid address");
+    }
+    return;
+  }
+
+  const mode = options.mode || browseMode.value;
+  const finalURL = mode === "archive" ? makeWaybackURL(liveURL) : liveURL;
+
+  currentURL = finalURL;
+  currentDisplayURL = liveURL;
+  address.value = liveURL;
+
+  hideHome();
+  startProgress();
+
+  setStatus(mode === "archive" ? "Requesting archived page..." : "Connecting to website...");
+  setNotice(
+    mode === "archive"
+      ? "Trying to load an archived version of " + liveURL
+      : "Opening live website: " + liveURL
+  );
+
+  frame.src = finalURL;
+  $("offlineOpenButton").dataset.url = finalURL;
+  $("offlineSnapshotsButton").dataset.url = liveURL;
+
+  if (!options.fromHistory) {
+    addHistory(liveURL);
+    if (options.pushHistory !== false) {
+      historyIndex = 0;
+    }
+  }
+
+  updateNavigationButtons();
+}
+
+function openLiveURL(url) {
+  navigate(url, { mode: "live" });
+}
+
+function findSnapshots() {
+  let url = normalizeURL(address.value);
+
+  if (!url && currentDisplayURL) {
+    url = currentDisplayURL;
+  }
+
+  if (!url) {
+    setNotice("Enter a website address first, then select Find saved versions.");
+    return;
+  }
+
+  const snapshotsURL = makeSnapshotSearchURL(url);
+  currentURL = snapshotsURL;
+  currentDisplayURL = url;
+  address.value = url;
+
+  hideHome();
+  clearLoadTimers();
+  startProgress();
+
+  frame.src = snapshotsURL;
+  $("offlineOpenButton").dataset.url = snapshotsURL;
+  $("offlineSnapshotsButton").dataset.url = url;
+
+  setNotice("Searching the Internet Archive's saved versions for " + url);
+  setStatus("Looking for archived versions...");
+  updateNavigationButtons();
+}
+
+function searchOldWeb(query) {
+  const q = query.trim();
+
+  if (!q) return;
+
+  // Search for old websites and archived content, rather than using a
+  // fictional built-in search index. The search itself is external.
+  const searchURL = "https://www.google.com/search?q=" +
+    encodeURIComponent(
+      q + " (GeoCities OR old personal homepage OR vintage website OR archived website)"
+    );
+
+  currentURL = searchURL;
+  currentDisplayURL = searchURL;
+  address.value = q;
+
+  hideHome();
+  clearLoadTimers();
+  startProgress();
+
+  frame.src = searchURL;
+  $("offlineOpenButton").dataset.url = searchURL;
+
+  setNotice("Searching the web for historical and vintage websites.");
+  setStatus("Opening search results...");
+  addHistory(searchURL);
+  updateNavigationButtons();
+}
+
+function updateNavigationButtons() {
+  $("backButton").disabled = historyIndex < 0 || historyItems.length < 2;
+  $("forwardButton").disabled = true;
+}
+
+function goBack() {
+  // The app tracks visited addresses locally. The browser's own iframe
+  // navigation history remains available for navigation within a website.
+  if (historyItems.length < 2) {
+    setStatus("No previous address in the local history.");
+    return;
+  }
+
+  const current = currentDisplayURL || currentURL;
+  const index = historyItems.findIndex(item => item.url === current);
+
+  let targetIndex = index >= 0 ? index + 1 : 1;
+  if (targetIndex >= historyItems.length) targetIndex = historyItems.length - 1;
+
+  const item = historyItems[targetIndex];
+  if (!item) {
+    setStatus("No previous address in the local history.");
+    return;
+  }
+
+  historyIndex = targetIndex;
+  navigate(item.url, {
+    mode: "live",
+    fromHistory: true,
+    pushHistory: false
+  });
+}
+
+function goForward() {
+  setStatus("Use the website's own links to continue browsing.");
+}
+
+function openInNewTab(url) {
+  const target = url || currentURL || normalizeURL(address.value);
+
+  if (!target) {
+    setStatus("Enter an address first.");
+    return;
+  }
+
+  window.open(target, "_blank", "noopener,noreferrer");
+  setStatus("Requested the page in a new tab.");
+}
+
+function toggleFavorite() {
+  const url = currentDisplayURL || normalizeURL(address.value);
+
+  if (!url) {
+    setStatus("Navigate to a website before bookmarking it.");
+    return;
+  }
+
+  const existing = favorites.find(item => item.url === url);
+
+  if (existing) {
+    favorites = favorites.filter(item => item.url !== url);
+    setStatus("Bookmark removed.");
+  } else {
+    favorites.unshift({
+      url: url,
+      title: url,
+      saved: new Date().toISOString()
+    });
+
+    favorites = favorites.slice(0, 200);
+    setStatus("Bookmark saved locally.");
+  }
+
+  saveArray(STORAGE_KEYS.favorites, favorites);
+}
+
+function showList(title, items, type) {
+  hideHome();
+  clearLoadTimers();
+  frame.src = "about:blank";
+  offlinePage.classList.remove("visible");
+
+  let html = `
+    <h2>${escapeHTML(title)}</h2>
+    <p>Saved on this computer by Internet Expedition.</p>
+  `;
+
+  if (!items.length) {
+    html += "<p>Nothing here yet.</p>";
+  } else {
+    html += "<ol>";
+
+    for (const item of items) {
+      const url = item.url || "";
+      const date = item.visited || item.saved || "";
+      html += `
+        <li style="margin-bottom:12px">
+          <a href="#" data-local-url="${escapeAttribute(url)}">
+            ${escapeHTML(item.title || url)}
+          </a>
+          <br>
+          <small>${escapeHTML(url)}</small>
+          <br>
+          <small>${escapeHTML(date ? new Date(date).toLocaleString() : "")}</small>
+          ${
+            type === "favorites"
+              ? ` <button data-remove-favorite="${escapeAttribute(url)}">Remove</button>`
+              : ""
+          }
+        </li>
+      `;
+    }
+
+    html += "</ol>";
+  }
+
+  html += `<button id="listHomeButton">Return to Internet Expedition</button>`;
+
+  offlinePage.innerHTML = html;
+  offlinePage.classList.add("visible");
+  setStatus(title);
+  setNotice("Your browsing information is stored locally in this browser.");
+  setProgress(0);
+
+  offlinePage.querySelectorAll("[data-local-url]").forEach(link => {
+    link.addEventListener("click", event => {
+      event.preventDefault();
+      const url = link.getAttribute("data-local-url");
+      navigate(url, { mode: "live" });
+    });
+  });
+
+  offlinePage.querySelectorAll("[data-remove-favorite]").forEach(button => {
+    button.addEventListener("click", () => {
+      const url = button.getAttribute("data-remove-favorite");
+      favorites = favorites.filter(item => item.url !== url);
+      saveArray(STORAGE_KEYS.favorites, favorites);
+      showList("My bookmarks", favorites, "favorites");
+    });
+  });
+
+  $("listHomeButton").addEventListener("click", showHome);
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+function escapeAttribute(value) {
+  return escapeHTML(value);
+}
+
+function randomDiscovery() {
+  const url = destinations[Math.floor(Math.random() * destinations.length)];
+  browseMode.value = "archive";
+  navigate(url, { mode: "archive" });
+}
+
+function handleMenu(name) {
+  switch (name) {
+    case "file":
+      showList("Browsing history", historyItems, "history");
+      break;
+    case "edit":
+      toggleFavorite();
+      break;
+    case "view":
+      findSnapshots();
+      break;
+    case "favorites":
+      showList("My bookmarks", favorites, "favorites");
+      break;
+    case "help":
+      alert(
+        "Internet Expedition\n\n" +
+        "Enter a web address and press Go.\n" +
+        "Choose Archived version to try a preserved copy.\n" +
+        "Choose Live website to visit the current site.\n" +
+        "Find saved versions searches the Wayback Machine.\n\n" +
+        "Some sites block embedded browsing. Use Open in new tab if needed.\n" +
+        "Bookmarks and history are saved in this browser's local storage."
+      );
+      break;
+  }
+}
+
+/* Address form */
+$("addressForm").addEventListener("submit", event => {
   event.preventDefault();
-  search();
+
+  const text = address.value.trim();
+  if (!text) return;
+
+  const url = normalizeURL(text);
+
+  if (url) {
+    navigate(url, { mode: browseMode.value });
+  } else {
+    searchOldWeb(text);
+  }
 });
 
-document.querySelectorAll("[data-query]").forEach(button => {
+/* Main toolbar */
+$("backButton").addEventListener("click", goBack);
+$("forwardButton").addEventListener("click", goForward);
+
+$("stopButton").addEventListener("click", () => {
+  clearLoadTimers();
+
+  try {
+    frame.contentWindow.stop();
+  } catch (error) {}
+
+  setProgress(0);
+  setStatus("Stopped.");
+  setNotice("Loading stopped.");
+});
+
+$("reloadButton").addEventListener("click", () => {
+  if (currentURL) {
+    frame.src = currentURL;
+    startProgress();
+    setStatus("Reloading...");
+  } else {
+    showHome();
+  }
+});
+
+$("homeButton").addEventListener("click", showHome);
+$("closeButton").addEventListener("click", showHome);
+$("favoriteButton").addEventListener("click", toggleFavorite);
+
+$("minButton").addEventListener("click", () => {
+  setNotice("This browser is running inside its host window. Use the host's minimize control.");
+});
+
+$("maxButton").addEventListener("click", () => {
+  document.body.classList.toggle("expanded");
+  setNotice("Use your desktop window controls to resize the browser.");
+});
+
+$("snapshotsButton").addEventListener("click", findSnapshots);
+
+$("openTabButton").addEventListener("click", () => {
+  openInNewTab(currentURL || normalizeURL(address.value));
+});
+
+$("randomButton").addEventListener("click", randomDiscovery);
+$("historyButton").addEventListener("click", () => {
+  showList("Browsing history", historyItems, "history");
+});
+
+$("bookmarksButton").addEventListener("click", () => {
+  showList("My bookmarks", favorites, "favorites");
+});
+
+$("searchButton").addEventListener("click", () => {
+  const query = prompt("What would you like to discover on the old web?");
+
+  if (query && query.trim()) {
+    searchOldWeb(query);
+  }
+});
+
+/* Menus */
+$("fileMenu").addEventListener("click", () => handleMenu("file"));
+$("editMenu").addEventListener("click", () => handleMenu("edit"));
+$("viewMenu").addEventListener("click", () => handleMenu("view"));
+$("favoritesMenu").addEventListener("click", () => handleMenu("favorites"));
+$("helpMenu").addEventListener("click", () => handleMenu("help"));
+
+/* Home page destination buttons */
+home.querySelectorAll("[data-url]").forEach(button => {
   button.addEventListener("click", () => {
-    $("query").value = button.dataset.query;
-    $("mode").value = "oldweb";
-    search();
+    navigate(button.dataset.url, { mode: browseMode.value });
   });
 });
 
-$("homeLink").addEventListener("click", event => {
-  event.preventDefault();
-  $("notice").classList.remove("hidden");
-  setNotice("Welcome back to Internet Expedition.");
-  showSection("homeSection");
-});
-
-$("homeButton").addEventListener("click", () => {
-  $("notice").classList.remove("hidden");
-  setNotice("Welcome back to Internet Expedition.");
-  showSection("homeSection");
-});
-
-$("historyLink").addEventListener("click", event => {
-  event.preventDefault();
-  renderHistory();
-  showSection("historySection");
-});
-
-$("favoritesLink").addEventListener("click", event => {
-  event.preventDefault();
-  renderFavorites();
-  showSection("favoritesSection");
-});
-
-$("aboutLink").addEventListener("click", event => {
-  event.preventDefault();
-  showSection("aboutSection");
-});
-
-$("backButton").addEventListener("click", () => {
-  const previous = state.previousQueries.pop();
-
-  if (previous) {
-    $("query").value = previous;
-    search(previous);
-  } else {
-    showSection("homeSection");
+/* Error and timeout screen controls */
+$("retryButton").addEventListener("click", () => {
+  if (currentURL) {
+    offlinePage.classList.remove("visible");
+    frame.src = currentURL;
+    startProgress();
   }
 });
 
-const favoriteButton = make("button", "", "☆ Save Current Search");
-favoriteButton.addEventListener("click", addCurrentFavorite);
-$("searchPanel").append(favoriteButton);
+$("offlineOpenButton").addEventListener("click", () => {
+  openInNewTab($("offlineOpenButton").dataset.url || currentURL);
+});
 
-renderHistory();
-renderFavorites();
+$("offlineSnapshotsButton").addEventListener("click", () => {
+  const url = $("offlineSnapshotsButton").dataset.url || currentDisplayURL;
+
+  if (url) {
+    address.value = url;
+    findSnapshots();
+  }
+});
+
+$("returnHomeButton").addEventListener("click", showHome);
+
+/* Iframe events */
+frame.addEventListener("load", () => {
+  if (isShowingHome) return;
+
+  clearLoadTimers();
+  setProgress(100);
+  setStatus("Page navigation completed. The site may still block embedded content.");
+
+  setTimeout(() => setProgress(0), 500);
+});
+
+/* Entering an address selects it for quick replacement. */
+address.addEventListener("focus", () => address.select());
+
+/* Initial state */
+showHome();
 </script>
 </body>
 </html>
