@@ -3,544 +3,802 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Internet Expedition - Explore the Web!</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Internet Expedition - Explore the Old Web</title>
 
 <style>
-:root {
-    --blue: #000080;
-    --light-blue: #dbe8f7;
-    --gray: #c0c0c0;
-    --dark-gray: #808080;
-    --white: #ffffff;
-    --black: #000000;
-}
+* { box-sizing: border-box; }
 
-* {
-    box-sizing: border-box;
+:root {
+  --blue: #000080;
+  --gray: #c0c0c0;
+  --teal: #008080;
 }
 
 body {
-    margin: 0;
-    min-height: 100vh;
-    background: #008080;
-    color: #111;
-    font-family: Tahoma, Verdana, Arial, sans-serif;
-    font-size: 13px;
-}
-
-a {
-    color: #0000aa;
-}
-
-a:visited {
-    color: #660099;
+  margin: 0;
+  background: var(--teal);
+  color: #111;
+  font-family: Tahoma, Verdana, Arial, sans-serif;
+  font-size: 13px;
 }
 
 button, input, select {
-    font: inherit;
+  font: inherit;
 }
 
 button {
-    cursor: pointer;
-    background: var(--gray);
-    border: 2px outset white;
-    padding: 7px 12px;
-    color: black;
+  padding: 7px 11px;
+  background: var(--gray);
+  border: 2px outset white;
+  cursor: pointer;
+  color: black;
 }
 
-button:active {
-    border-style: inset;
-}
+button:active { border-style: inset; }
 
-/* Main desktop window */
+a { color: #0000aa; }
+a:visited { color: #660099; }
 
-.window {
-    width: min(940px, calc(100% - 24px));
-    margin: 22px auto;
-    background: var(--gray);
-    border: 3px outset white;
-    box-shadow: 5px 5px 0 rgba(0,0,0,.25);
+.shell {
+  width: min(1000px, calc(100% - 16px));
+  margin: 8px auto;
+  background: var(--gray);
+  border: 3px outset white;
+  min-height: calc(100vh - 16px);
 }
 
 .titlebar {
-    background: var(--blue);
-    color: white;
-    padding: 8px 10px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
+  background: var(--blue);
+  color: white;
+  padding: 8px 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-.titlebar .symbol {
-    font-size: 19px;
-}
-
-.titlebar .controls {
-    background: var(--gray);
-    color: black;
-    padding: 1px 7px;
-    border: 2px outset white;
-}
-
-.menubar {
-    padding: 8px;
-    display: flex;
-    gap: 20px;
-    border-bottom: 1px solid #888;
-    flex-wrap: wrap;
+.menubar, .toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px;
+  border-bottom: 1px solid #888;
 }
 
 .menubar a {
-    color: #111;
-    text-decoration: none;
-}
-
-.menubar a:hover {
-    text-decoration: underline;
-}
-
-.toolbar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 9px;
-    background: #dedbd3;
-    border-bottom: 2px inset white;
-    flex-wrap: wrap;
+  text-decoration: none;
+  color: #111;
 }
 
 .address {
-    flex: 1;
-    min-width: 180px;
-    background: white;
-    border: 2px inset #eee;
-    padding: 7px;
-    overflow-wrap: anywhere;
+  flex: 1;
+  min-width: 160px;
+  padding: 7px;
+  background: white;
+  border: 2px inset white;
+  overflow-wrap: anywhere;
 }
 
 main {
-    background: white;
-    margin: 10px;
-    border: 2px inset white;
+  margin: 9px;
+  background: white;
+  border: 2px inset white;
 }
 
 .hero {
-    padding: 25px 18px 20px;
-    text-align: center;
-    color: white;
-    background:
-        radial-gradient(ellipse at center, #214e8b, #071338 75%);
-    border-bottom: 5px ridge #c0c0c0;
+  text-align: center;
+  padding: 24px 12px;
+  color: white;
+  background: radial-gradient(ellipse, #28568c, #071331);
+  border-bottom: 5px ridge #c0c0c0;
 }
 
 .globe {
-    font-size: clamp(45px, 9vw, 75px);
-    margin-bottom: 5px;
-    text-shadow: 3px 3px #000;
+  font-size: 55px;
+  text-shadow: 3px 3px black;
 }
 
-.hero h1 {
-    margin: 4px 0;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(27px, 6vw, 43px);
-    letter-spacing: 2px;
-    color: #ffe78b;
-    text-shadow: 2px 2px black;
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(25px, 5vw, 42px);
+  letter-spacing: 2px;
+  color: #ffe68b;
+  text-shadow: 2px 2px black;
+  margin: 5px 0;
 }
 
 .hero p {
-    margin: 10px 0 0;
-    color: #dce8ff;
-    line-height: 1.6;
+  color: #dce8ff;
+  line-height: 1.6;
 }
 
-.search-area {
-    padding: 18px;
-    background: #e6e4dc;
-    border-bottom: 2px groove white;
+.search-panel {
+  padding: 16px;
+  background: #e5e3dc;
+  border-bottom: 2px groove white;
 }
 
-.search-area h2 {
-    font-size: 17px;
-    margin: 0 0 12px;
-}
+.search-panel h2 { margin-top: 0; }
 
 .search-form {
-    display: flex;
-    gap: 7px;
+  display: flex;
+  gap: 7px;
 }
 
-.search-form input {
-    flex: 1;
-    min-width: 0;
-    padding: 10px;
-    background: white;
-    border: 2px inset white;
-    font-size: 15px;
-}
-
-.search-form button {
-    font-weight: bold;
-    min-width: 90px;
+#query {
+  flex: 1;
+  min-width: 0;
+  padding: 10px;
+  background: white;
+  border: 2px inset white;
+  font-size: 15px;
 }
 
 .filters {
-    margin-top: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 7px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 12px;
 }
 
-.filters label {
-    font-weight: bold;
+select {
+  padding: 7px;
+  max-width: 100%;
+  background: white;
+  border: 2px inset white;
 }
 
-.filters select {
-    padding: 6px;
-    background: white;
-    border: 2px inset white;
-    max-width: 100%;
-}
-
-.section {
-    padding: 18px;
-}
+.content { padding: 16px; }
 
 .section-title {
-    font-size: 18px;
-    color: #000080;
-    border-bottom: 2px solid #000080;
-    padding-bottom: 7px;
-    margin: 0 0 15px;
+  font-size: 18px;
+  color: var(--blue);
+  border-bottom: 2px solid var(--blue);
+  padding-bottom: 8px;
 }
 
-.destinations {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+.notice {
+  padding: 12px;
+  background: #fffbdc;
+  border: 1px solid #b9a95d;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .destination {
-    min-width: 0;
-    padding: 13px;
-    background: #f5f5f5;
-    border: 1px solid #aaa;
-    border-top: 3px solid #244f91;
+  padding: 13px;
+  background: #f4f4f4;
+  border: 1px solid #aaa;
+  border-top: 3px solid #244f91;
+  overflow-wrap: anywhere;
 }
 
-.destination h3 {
-    margin: 0 0 7px;
-    font-size: 15px;
-}
+.destination h3 { margin-top: 0; }
 
 .destination p {
-    margin: 0 0 12px;
-    line-height: 1.6;
+  line-height: 1.6;
 }
 
-.destination a {
-    display: inline-block;
-    margin-top: 3px;
+.destination button, .destination a {
+  display: inline-block;
+  margin: 3px 3px 3px 0;
 }
 
-.expedition-button {
-    display: inline-block;
-    padding: 7px 10px;
-    border: 2px outset white;
-    background: #d6d6d6;
-    text-decoration: none;
-    color: #000080 !important;
+.result {
+  padding: 13px 0;
+  border-bottom: 1px solid #ccc;
+  overflow-wrap: anywhere;
 }
 
-.expedition-button:hover {
-    background: #e8e8ff;
+.result h3 {
+  font-size: 17px;
+  margin: 0 0 7px;
+  font-weight: normal;
 }
 
-.tip {
-    margin: 0 18px 18px;
-    padding: 12px;
-    background: #fffbdc;
-    border: 1px solid #b9a95d;
-    line-height: 1.6;
+.result p { line-height: 1.6; }
+
+.small {
+  font-size: 11px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 
 footer {
-    background: #dedbd3;
-    border-top: 2px groove white;
-    text-align: center;
-    padding: 12px;
-    color: #333;
-    line-height: 1.8;
+  padding: 13px;
+  text-align: center;
+  line-height: 1.8;
 }
 
-.statusbar {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 6px 9px;
-    color: #333;
-    flex-wrap: wrap;
+.status {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 7px 9px;
+  border-top: 2px groove white;
 }
 
-@media (max-width: 520px) {
-    .window {
-        width: calc(100% - 12px);
-        margin: 6px auto;
-    }
+.hidden { display: none !important; }
 
-    main {
-        margin: 5px;
-    }
-
-    .destinations {
-        grid-template-columns: 1fr;
-    }
-
-    .search-form {
-        flex-wrap: wrap;
-    }
-
-    .search-form input {
-        flex-basis: 100%;
-    }
-
-    .search-form button {
-        flex: 1;
-    }
-
-    .section, .search-area {
-        padding: 12px;
-    }
+@media (max-width: 540px) {
+  .results-grid { grid-template-columns: 1fr; }
+  .search-form { flex-wrap: wrap; }
+  #query { flex-basis: 100%; }
+  .content, .search-panel { padding: 11px; }
+  main { margin: 4px; }
 }
 </style>
 </head>
 
 <body>
+<div class="shell">
 
-<div class="window">
+  <header class="titlebar">
+    <span>🌐 Internet Expedition</span>
+    <span>_ &nbsp; □ &nbsp; ×</span>
+  </header>
 
-    <header class="titlebar">
-        <span><span class="symbol">🌐</span>
-        Internet Expedition</span>
-        <span class="controls">_ &nbsp; □ &nbsp; ×</span>
-    </header>
+  <nav class="menubar">
+    <a href="#" id="homeLink">Home</a>
+    <a href="#" id="historyLink">History</a>
+    <a href="#" id="favoritesLink">Favorites</a>
+    <a href="#" id="aboutLink">About</a>
+  </nav>
 
-    <nav class="menubar">
-        <a href="index.html">Home</a>
-        <a href="#search">Search</a>
-        <a href="#destinations">Expeditions</a>
-        <a href="#about">About</a>
-    </nav>
+  <div class="toolbar">
+    <button id="backButton">◀ Back</button>
+    <button id="homeButton">⌂ Home</button>
+    <span class="address" id="address">
+      internet98.github.io/apps/browser.html
+    </span>
+  </div>
 
-    <div class="toolbar">
-        <button onclick="history.back()">◀ Back</button>
-        <button onclick="location.reload()">↻ Refresh</button>
-        <span class="address" id="address">
-            http://internet98.github.io/expedition.html
-        </span>
-        <button onclick="location.href='index.html'">Home</button>
-    </div>
+  <main>
+    <section class="hero">
+      <div class="globe">🌎</div>
+      <h1>INTERNET EXPEDITION</h1>
+      <p>
+        Explore the forgotten World Wide Web.<br>
+        Personal websites, old computers and digital history.
+      </p>
+      <strong>★ YOUR JOURNEY BACK IN TIME ★</strong>
+    </section>
 
-    <main>
-        <section class="hero">
-            <div class="globe">🌎</div>
-            <h1>INTERNET EXPEDITION</h1>
+    <section class="search-panel" id="searchPanel">
+      <h2>🔎 Search the Old Internet</h2>
+
+      <form class="search-form" id="searchForm">
+        <input
+          id="query"
+          type="search"
+          placeholder="Try GeoCities, Windows 95, old arcade games..."
+          maxlength="300"
+          autocomplete="off"
+          required
+        >
+        <button type="submit">Search!</button>
+      </form>
+
+      <div class="filters">
+        <label for="mode">Expedition:</label>
+        <select id="mode">
+          <option value="oldweb">Old Internet</option>
+          <option value="geocities">GeoCities Websites</option>
+          <option value="archive">Archived Websites</option>
+          <option value="computers">Vintage Computers</option>
+          <option value="games">Classic Games</option>
+          <option value="cartoons">Classic Cartoons & TV</option>
+          <option value="music">Old Music Websites</option>
+          <option value="modern">Modern Web Search</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="content">
+      <div id="notice" class="notice">
+        Welcome, explorer! Search for an old website or choose an expedition
+        below. Historical pages are not always available, but there are
+        millions of surviving web snapshots to explore.
+      </div>
+
+      <section id="homeSection">
+        <h2 class="section-title">🧭 Choose Your Expedition</h2>
+
+        <div class="results-grid">
+          <article class="destination">
+            <h3>🕸️ The Forgotten Web</h3>
             <p>
-                Your gateway to the World Wide Web!<br>
-                Discover new places. Explore old favorites.
-                Find something unexpected.
+              Find personal websites, colorful backgrounds, animated GIFs
+              and homemade pages from the early web.
             </p>
-            <p>★ ESTABLISHED 1998 ★</p>
-        </section>
+            <button data-query="1990s personal websites GeoCities">
+              Start exploring »
+            </button>
+            <p><a href="https://oocities.org/">Browse GeoCities archives</a></p>
+          </article>
 
-        <section class="search-area" id="search">
-            <h2>🔎 Search the Internet</h2>
+          <article class="destination">
+            <h3>⏳ The Web Time Machine</h3>
+            <p>
+              Look up historical snapshots of a website and discover
+              what it looked like years ago.
+            </p>
+            <a href="https://web.archive.org/">Visit the Wayback Machine »</a>
+          </article>
 
-            <form class="search-form" id="searchForm">
-                <input
-                    id="query"
-                    type="search"
-                    placeholder="What do you want to discover?"
-                    aria-label="Search the internet"
-                    maxlength="300"
-                    required
-                >
-                <button type="submit">Search!</button>
-            </form>
+          <article class="destination">
+            <h3>💾 Vintage Computers</h3>
+            <p>
+              Explore old computer systems, software, manuals and
+              the machines that connected people to the internet.
+            </p>
+            <button data-query="vintage computers 1990s computer history">
+              Start exploring »
+            </button>
+            <p><a href="https://winworldpc.com/">Visit WinWorld</a></p>
+          </article>
 
-            <div class="filters">
-                <label for="category">Expedition category:</label>
-                <select id="category">
-                    <option value="">Everything</option>
-                    <option value="retro gaming arcade">Games & Arcades</option>
-                    <option value="vintage computers Windows 95">Retro Computing</option>
-                    <option value="1980s 1990s cartoons television">Cartoons & TV</option>
-                    <option value="1980s 1990s music">Music</option>
-                    <option value="old personal websites GeoCities">Forgotten Websites</option>
-                    <option value="internet history archives">Internet History</option>
-                </select>
-            </div>
-        </section>
+          <article class="destination">
+            <h3>🕹️ Classic Arcade Games</h3>
+            <p>
+              Discover arcade history, vintage game documentation,
+              old gaming sites and classic cabinets.
+            </p>
+            <button data-query="classic arcade games history 1980s">
+              Start exploring »
+            </button>
+            <p><a href="https://www.arcade-museum.com/">Arcade Museum</a></p>
+          </article>
 
-        <section class="section" id="destinations">
-            <h2 class="section-title">🧭 Choose Your Expedition</h2>
+          <article class="destination">
+            <h3>📺 Classic Television</h3>
+            <p>
+              Research old cartoons, children's shows, animation
+              and television history.
+            </p>
+            <button data-query="1980s 1990s children's television history">
+              Start exploring »
+            </button>
+            <p><a href="https://archive.org/">Internet Archive</a></p>
+          </article>
 
-            <div class="destinations">
-
-                <article class="destination">
-                    <h3>🕹️ Arcade Alley</h3>
-                    <p>
-                        Visit the world of classic arcade cabinets,
-                        pixel games, high scores and electronic
-                        entertainment.
-                    </p>
-                    <a class="expedition-button"
-                       href="https://www.arcade-museum.com/">
-                       Enter Arcade Alley »
-                    </a>
-                </article>
-
-                <article class="destination">
-                    <h3>💾 Computer Corner</h3>
-                    <p>
-                        Explore vintage PCs, operating systems,
-                        computer history and the technology
-                        that brought the web into homes.
-                    </p>
-                    <a class="expedition-button"
-                       href="https://winworldpc.com/">
-                       Visit Computer Corner »
-                    </a>
-                </article>
-
-                <article class="destination">
-                    <h3>📺 Cartoon Station</h3>
-                    <p>
-                        Discover animation history, television
-                        archives and the colorful world of
-                        classic children's entertainment.
-                    </p>
-                    <a class="expedition-button"
-                       href="https://archive.org/">
-                       Visit the Archives »
-                    </a>
-                </article>
-
-                <article class="destination">
-                    <h3>🕸️ Forgotten Web</h3>
-                    <p>
-                        Explore preserved personal websites,
-                        old web designs and the strange,
-                        wonderful early internet.
-                    </p>
-                    <a class="expedition-button"
-                       href="https://www.webdesignmuseum.org/">
-                       Explore Web History »
-                    </a>
-                </article>
-
-                <article class="destination">
-                    <h3>⏳ Time Machine</h3>
-                    <p>
-                        Travel back through archived versions
-                        of websites and see how the internet
-                        looked in years gone by.
-                    </p>
-                    <a class="expedition-button"
-                       href="https://web.archive.org/">
-                       Travel Back in Time »
-                    </a>
-                </article>
-
-                <article class="destination">
-                    <h3>🌐 Early Web Museum</h3>
-                    <p>
-                        Learn about the history of the web,
-                        its early browsers, its creators
-                        and its evolution.
-                    </p>
-                    <a class="expedition-button"
-                       href="https://theoldnet.com/">
-                       Explore the Old Web »
-                    </a>
-                </article>
-
-            </div>
-        </section>
-
-        <div class="tip">
-            <strong>EXPEDITION TIP:</strong>
-            Type a topic above and choose a category to narrow
-            your search. Your search will open in DuckDuckGo.
-            No account or API key is required by this website.
+          <article class="destination">
+            <h3>🎨 Old Web Design</h3>
+            <p>
+              Study classic layouts, old browser interfaces, tiled
+              backgrounds and vintage website graphics.
+            </p>
+            <button data-query="1990s web design historical websites">
+              Start exploring »
+            </button>
+            <p><a href="https://www.webdesignmuseum.org/">Web Design Museum</a></p>
+          </article>
         </div>
-    </main>
+      </section>
 
-    <footer id="about">
-        <strong>INTERNET EXPEDITION</strong><br>
-        Exploring the World Wide Web, one click at a time.<br>
-        Part of the Internet.98 project.<br>
-        <span id="clock">Ready to explore!</span>
-    </footer>
+      <section id="resultsSection" class="hidden">
+        <h2 class="section-title">Expedition Results</h2>
+        <div id="results"></div>
+      </section>
 
-    <div class="statusbar">
-        <span id="status">Ready</span>
-        <span>🌐 Internet Expedition</span>
-    </div>
+      <section id="historySection" class="hidden">
+        <h2 class="section-title">Recent Searches</h2>
+        <div id="history"></div>
+      </section>
 
+      <section id="favoritesSection" class="hidden">
+        <h2 class="section-title">Favorite Discoveries</h2>
+        <div id="favorites"></div>
+      </section>
+
+      <section id="aboutSection" class="hidden">
+        <h2 class="section-title">About Internet Expedition</h2>
+        <p>
+          Internet Expedition is a retro-styled portal for discovering
+          surviving websites and historical web archives.
+        </p>
+        <p>
+          Search engines and web archives have different indexes.
+          A search cannot guarantee that a site still exists or that
+          an archived snapshot is complete.
+        </p>
+        <p>
+          This version uses external search services for discovery
+          and the Wayback Machine for archived website snapshots.
+          It does not claim to own or index the entire old internet.
+        </p>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <strong>INTERNET EXPEDITION</strong><br>
+    Part of the Internet.98 project.<br>
+    <span class="small">Exploring yesterday's web, one click at a time.</span>
+  </footer>
+
+  <div class="status">
+    <span id="status">Ready</span>
+    <span>🌐 Internet Expedition</span>
+  </div>
 </div>
 
 <script>
-const form = document.getElementById("searchForm");
-const queryInput = document.getElementById("query");
-const category = document.getElementById("category");
-const status = document.getElementById("status");
+"use strict";
 
-form.addEventListener("submit", function(event) {
-    event.preventDefault();
+const $ = id => document.getElementById(id);
 
-    const query = queryInput.value.trim();
+const STORAGE = {
+  history: "ie_search_history_v1",
+  favorites: "ie_favorites_v1"
+};
 
-    if (!query) {
-        queryInput.focus();
-        status.textContent = "Please enter a search term.";
-        return;
+function loadList(key) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(value) ? value : [];
+  } catch (_) {
+    return [];
+  }
+}
+
+const state = {
+  history: loadList(STORAGE.history),
+  favorites: loadList(STORAGE.favorites),
+  currentQuery: "",
+  previousQueries: []
+};
+
+const modes = {
+  oldweb: {
+    label: "Old Internet",
+    build: q =>
+      "https://www.google.com/search?q=" +
+      encodeURIComponent(
+        '(site:oocities.org OR site:geocities.ws OR ' +
+        'site:neocities.org) ' + q
+      )
+  },
+
+  geocities: {
+    label: "GeoCities Websites",
+    build: q =>
+      "https://www.google.com/search?q=" +
+      encodeURIComponent(
+        '(site:oocities.org OR site:geocities.ws) ' + q
+      )
+  },
+
+  archive: {
+    label: "Archived Websites",
+    build: q => {
+      if (/^https?:\/\//i.test(q)) {
+        return "https://web.archive.org/web/*/" + q;
+      }
+
+      return "https://www.google.com/search?q=" +
+        encodeURIComponent(
+          'site:web.archive.org/web/ ' + q
+        );
     }
+  },
 
-    const extra = category.value;
-    const fullQuery = extra
-        ? query + " " + extra
-        : query;
+  computers: {
+    label: "Vintage Computers",
+    build: q =>
+      "https://www.google.com/search?q=" +
+      encodeURIComponent(
+        '(site:winworldpc.com OR site:oldcomputers.net ' +
+        'OR site:computerhistory.org) ' + q
+      )
+  },
 
-    status.textContent = "Launching expedition...";
+  games: {
+    label: "Classic Games",
+    build: q =>
+      "https://www.google.com/search?q=" +
+      encodeURIComponent(
+        '(site:archive.org OR site:arcade-museum.com ' +
+        'OR site:classicgaming.games) ' + q
+      )
+  },
 
-    const searchURL =
-        "https://duckduckgo.com/?q=" +
-        encodeURIComponent(fullQuery);
+  cartoons: {
+    label: "Classic Cartoons & TV",
+    build: q =>
+      "https://www.google.com/search?q=" +
+      encodeURIComponent(
+        '(site:archive.org OR site:paleycenter.org) ' + q
+      )
+  },
 
-    window.location.href = searchURL;
-});
+  music: {
+    label: "Old Music Websites",
+    build: q =>
+      "https://www.google.com/search?q=" +
+      encodeURIComponent(
+        '(site:archive.org OR site:discogs.com) ' + q
+      )
+  },
 
-queryInput.addEventListener("keydown", function(event) {
-    if (event.key === "Escape") {
-        queryInput.value = "";
-    }
-});
+  modern: {
+    label: "Modern Web Search",
+    build: q =>
+      "https://duckduckgo.com/?q=" + encodeURIComponent(q)
+  }
+};
 
-document.getElementById("clock").textContent =
-    "Expedition system online • " +
-    new Date().getFullYear();
+function saveList(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (_) {
+    $("status").textContent = "Browser storage unavailable";
+  }
+}
 
-document.querySelectorAll(".expedition-button").forEach(function(link) {
-    link.addEventListener("click", function() {
-        status.textContent = "Opening expedition destination...";
+function showSection(name) {
+  const ids = [
+    "homeSection",
+    "resultsSection",
+    "historySection",
+    "favoritesSection",
+    "aboutSection"
+  ];
+
+  ids.forEach(id => $(id).classList.add("hidden"));
+  $(name).classList.remove("hidden");
+}
+
+function make(tag, className, content) {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  if (content !== undefined) element.textContent = content;
+  return element;
+}
+
+function setNotice(text) {
+  $("notice").textContent = text;
+  $("notice").classList.remove("hidden");
+}
+
+function recordSearch(query) {
+  state.history = [
+    query,
+    ...state.history.filter(item => item !== query)
+  ].slice(0, 50);
+
+  saveList(STORAGE.history, state.history);
+}
+
+function search(query = $("query").value.trim()) {
+  query = query.trim();
+
+  if (!query) {
+    $("query").focus();
+    setNotice("Enter a topic or website address to begin.");
+    return;
+  }
+
+  const selected = modes[$("mode").value] || modes.oldweb;
+  const destination = selected.build(query);
+
+  state.currentQuery = query;
+  state.previousQueries.push(query);
+
+  recordSearch(query);
+
+  $("results").replaceChildren();
+
+  const result = make("article", "result");
+  result.append(
+    make("h3", "", selected.label),
+    make(
+      "p",
+      "",
+      'Search for "' + query + '" in the selected web collection.'
+    ),
+    make(
+      "p",
+      "small",
+      "These are external search results. Availability and historical coverage vary."
+    )
+  );
+
+  const open = make("a", "", "Open search results »");
+  open.href = destination;
+  open.target = "_blank";
+  open.rel = "noopener noreferrer";
+  result.append(open);
+
+  $("results").append(result);
+
+  if (/^https?:\/\//i.test(query)) {
+    const archive = make("article", "result");
+    archive.append(
+      make("h3", "", "Historical snapshots"),
+      make(
+        "p",
+        "",
+        "Check whether an earlier version of this website was archived."
+      )
+    );
+
+    const snapshot = make("a", "", "Explore archived versions »");
+    snapshot.href = "https://web.archive.org/web/*/" + query;
+    snapshot.target = "_blank";
+    snapshot.rel = "noopener noreferrer";
+    archive.append(snapshot);
+    $("results").append(archive);
+  }
+
+  $("notice").textContent =
+    'Expedition prepared for "' + query + '".';
+
+  $("notice").classList.remove("hidden");
+  $("address").textContent = "Internet Expedition / " + selected.label;
+  $("status").textContent = "Search ready";
+  showSection("results");
+}
+
+function renderHistory() {
+  const container = $("history");
+  container.replaceChildren();
+
+  if (!state.history.length) {
+    container.append(make("p", "", "No searches recorded yet."));
+    return;
+  }
+
+  state.history.forEach(query => {
+    const row = make("p");
+    const button = make("button", "", "🔎 " + query);
+
+    button.addEventListener("click", () => {
+      $("query").value = query;
+      search(query);
     });
-});
-</script>
 
+    row.append(button);
+    container.append(row);
+  });
+
+  const clear = make("button", "", "Clear History");
+  clear.addEventListener("click", () => {
+    state.history = [];
+    saveList(STORAGE.history, []);
+    renderHistory();
+  });
+
+  container.append(clear);
+}
+
+function renderFavorites() {
+  const container = $("favorites");
+  container.replaceChildren();
+
+  if (!state.favorites.length) {
+    container.append(
+      make("p", "", "No favorite discoveries yet. Save a search to keep it here.")
+    );
+    return;
+  }
+
+  state.favorites.forEach(item => {
+    const row = make("article", "result");
+    const link = make("a", "", item.query);
+    link.href = item.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+
+    const remove = make("button", "", "Remove");
+    remove.addEventListener("click", () => {
+      state.favorites = state.favorites.filter(
+        favorite => favorite.url !== item.url
+      );
+      saveList(STORAGE.favorites, state.favorites);
+      renderFavorites();
+    });
+
+    row.append(link, document.createTextNode(" "), remove);
+    container.append(row);
+  });
+}
+
+function addCurrentFavorite() {
+  if (!state.currentQuery) return;
+
+  const selected = modes[$("mode").value] || modes.oldweb;
+  const item = {
+    query: state.currentQuery,
+    url: selected.build(state.currentQuery)
+  };
+
+  if (!state.favorites.some(f => f.url === item.url)) {
+    state.favorites.unshift(item);
+    saveList(STORAGE.favorites, state.favorites);
+  }
+
+  renderFavorites();
+  $("status").textContent = "Favorite saved";
+}
+
+$("searchForm").addEventListener("submit", event => {
+  event.preventDefault();
+  search();
+});
+
+document.querySelectorAll("[data-query]").forEach(button => {
+  button.addEventListener("click", () => {
+    $("query").value = button.dataset.query;
+    $("mode").value = "oldweb";
+    search();
+  });
+});
+
+$("homeLink").addEventListener("click", event => {
+  event.preventDefault();
+  $("notice").classList.remove("hidden");
+  setNotice("Welcome back to Internet Expedition.");
+  showSection("homeSection");
+});
+
+$("homeButton").addEventListener("click", () => {
+  $("notice").classList.remove("hidden");
+  setNotice("Welcome back to Internet Expedition.");
+  showSection("homeSection");
+});
+
+$("historyLink").addEventListener("click", event => {
+  event.preventDefault();
+  renderHistory();
+  showSection("historySection");
+});
+
+$("favoritesLink").addEventListener("click", event => {
+  event.preventDefault();
+  renderFavorites();
+  showSection("favoritesSection");
+});
+
+$("aboutLink").addEventListener("click", event => {
+  event.preventDefault();
+  showSection("aboutSection");
+});
+
+$("backButton").addEventListener("click", () => {
+  const previous = state.previousQueries.pop();
+
+  if (previous) {
+    $("query").value = previous;
+    search(previous);
+  } else {
+    showSection("homeSection");
+  }
+});
+
+const favoriteButton = make("button", "", "☆ Save Current Search");
+favoriteButton.addEventListener("click", addCurrentFavorite);
+$("searchPanel").append(favoriteButton);
+
+renderHistory();
+renderFavorites();
+</script>
 </body>
 </html>
