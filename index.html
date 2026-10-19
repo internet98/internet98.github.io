@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,66 +6,204 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>internet.98 - Welcome</title>
 <link rel="stylesheet" href="css/system.css">
+
+<style>
+/* internet.98 retro visitor counter */
+.visitor-counter {
+  display: table;
+  margin: 18px auto;
+  padding: 12px;
+  text-align: center;
+  color: #000;
+  background: #c0c0c0;
+  border: 3px outset #fff;
+  box-shadow: 2px 2px 0 #808080;
+  font-family: Tahoma, Arial, sans-serif;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.visitor-label {
+  font-size: 11px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.visitor-counter-frame {
+  padding: 5px;
+  background: #d4d0c8;
+  border: 2px inset #808080;
+}
+
+.visitor-footer {
+  margin-top: 9px;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.visitor-caption {
+  margin-top: 5px;
+  font-size: 9px;
+  color: #444;
+}
+</style>
 </head>
+
 <body class="login-body">
+
 <main class="login-shell">
+
   <section class="login-brand">
-    <img src="assets/logo.png" class="brand-logo" alt="internet.98"
+
+    <img src="assets/logo.png"
+         class="brand-logo"
+         alt="internet.98"
          onerror="this.hidden=true">
-    <div class="logo-fallback">internet<span>.98</span></div>
+
+    <div class="logo-fallback">
+      internet<span>.98</span>
+    </div>
+
     <p>A little window to a bigger world.</p>
+
     <div class="welcome-art">
       <div class="pixel-sun"></div>
       <div class="pixel-hill"></div>
       <div class="pixel-hill second"></div>
-      <div class="art-caption">WELCOME TO YOUR NEW COMPUTER!</div>
+      <div class="art-caption">
+        WELCOME TO YOUR NEW COMPUTER!
+      </div>
     </div>
+
     <p class="small">A retro desktop experience</p>
+
+    <!-- SHARED INTERNET.98 VISITOR COUNTER -->
+    <div class="visitor-counter">
+
+      <div class="visitor-label">
+        YOU ARE VISITOR NUMBER
+      </div>
+
+      <div class="visitor-counter-frame">
+        <script
+          src="https://www.stats4u.net/s4u.js"
+          data-id="3939365618"
+          data-style="950"
+          data-params="form=fenster&c1=0011ff&c2=c7d0ff"
+          async>
+        </script>
+      </div>
+
+      <div class="visitor-footer">
+        THANK YOU FOR VISITING!
+      </div>
+
+      <div class="visitor-caption">
+        INTERNET.98 VISITOR REGISTER
+      </div>
+
+    </div>
+    <!-- END VISITOR COUNTER -->
+
   </section>
 
   <section class="window login-window">
+
     <header class="titlebar">
       <span>Welcome to internet.98</span>
       <span class="window-buttons">_ □ ×</span>
     </header>
+
     <div class="window-content">
+
       <h2>Log on</h2>
       <p class="muted">Enter your local profile details.</p>
 
       <form id="loginForm">
+
         <label for="loginUser">User name</label>
-        <input id="loginUser" maxlength="24" required autocomplete="username">
+        <input
+          id="loginUser"
+          maxlength="24"
+          required
+          autocomplete="username">
+
         <label for="loginPass">Demo password</label>
-        <input id="loginPass" type="password" required autocomplete="current-password">
+        <input
+          id="loginPass"
+          type="password"
+          required
+          autocomplete="current-password">
+
         <p id="loginError" class="error"></p>
-        <button class="classic-button primary" type="submit">Log on</button>
+
+        <button class="classic-button primary" type="submit">
+          Log on
+        </button>
+
       </form>
 
       <div class="button-row">
-        <button class="classic-button" id="showCreate">Create account</button>
-        <button class="classic-button" id="guestButton">Enter as guest</button>
+        <button class="classic-button" id="showCreate">
+          Create account
+        </button>
+
+        <button class="classic-button" id="guestButton">
+          Enter as guest
+        </button>
       </div>
 
       <section id="createArea" class="hidden">
+
         <hr>
+
         <h3>Create a local profile</h3>
-        <p class="notice">This demo stores profiles in this browser only. Use a fictional password, not one you use elsewhere.</p>
+
+        <p class="notice">
+          This demo stores profiles in this browser only.
+          Use a fictional password, not one you use elsewhere.
+        </p>
+
         <form id="createForm">
+
           <label for="newUser">Screen name</label>
           <input id="newUser" maxlength="24" required>
+
           <label for="newEmail">Optional fictional email</label>
-          <input id="newEmail" type="email" placeholder="user@example.invalid">
+          <input
+            id="newEmail"
+            type="email"
+            placeholder="user@example.invalid">
+
           <label for="newPass">Demo password</label>
-          <input id="newPass" type="password" minlength="4" required>
+          <input
+            id="newPass"
+            type="password"
+            minlength="4"
+            required>
+
           <p id="createError" class="error"></p>
-          <button class="classic-button primary" type="submit">Create profile</button>
+
+          <button class="classic-button primary" type="submit">
+            Create profile
+          </button>
+
         </form>
+
       </section>
 
-      <p class="fine-print">internet.98 is a local browser project, not a real internet provider or secure authentication service.</p>
+      <p class="fine-print">
+        internet.98 is a local browser project, not a real internet
+        provider or secure authentication service.
+      </p>
+
     </div>
   </section>
+
 </main>
+
 <script src="js/system.js"></script>
+
 </body>
 </html>
